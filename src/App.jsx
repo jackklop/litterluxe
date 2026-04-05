@@ -203,7 +203,10 @@ const Nav = () => {
       >
         Litter<span style={{ color: COLORS.sage }}>Luxe</span>
       </div>
-      <div style={{ display: "flex", gap: "36px", alignItems: "center" }}>
+      <div
+        className="nav-links"
+        style={{ display: "flex", gap: "36px", alignItems: "center" }}
+      >
         {links.map((l) => (
           <span
             key={l}
@@ -225,28 +228,29 @@ const Nav = () => {
             {l}
           </span>
         ))}
-        <button
-          onClick={() => scrollTo("contact")}
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "13px",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-            color: COLORS.cream,
-            background: COLORS.charcoal,
-            border: "none",
-            padding: "12px 28px",
-            borderRadius: "100px",
-            cursor: "pointer",
-            transition: "all 0.3s",
-          }}
-          onMouseEnter={(e) => (e.target.style.background = COLORS.sage)}
-          onMouseLeave={(e) => (e.target.style.background = COLORS.charcoal)}
-        >
-          Join Waitlist
-        </button>
       </div>
+      <button
+        className="nav-cta"
+        onClick={() => scrollTo("contact")}
+        style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: "13px",
+          fontWeight: 600,
+          textTransform: "uppercase",
+          letterSpacing: "0.08em",
+          color: COLORS.cream,
+          background: COLORS.charcoal,
+          border: "none",
+          padding: "12px 28px",
+          borderRadius: "100px",
+          cursor: "pointer",
+          transition: "all 0.3s",
+        }}
+        onMouseEnter={(e) => (e.target.style.background = COLORS.sage)}
+        onMouseLeave={(e) => (e.target.style.background = COLORS.charcoal)}
+      >
+        Join Waitlist
+      </button>
     </nav>
   );
 };
@@ -345,6 +349,7 @@ const Hero = () => {
       <div style={{ position: "relative", zIndex: 2 }}>
         <AnimatedText delay={0.1}>
           <div
+            className="hero-subtitle"
             style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: "12px",
@@ -525,6 +530,19 @@ const Hero = () => {
         @keyframes countPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
         *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:${COLORS.cream}}
         ::selection{background:${COLORS.sageLight};color:${COLORS.charcoal}}
+        @media(max-width:768px){
+          nav{padding:14px 16px !important}
+          .nav-links{display:none !important}
+          .nav-cta{padding:10px 20px !important;font-size:12px !important}
+          section{padding-left:20px !important;padding-right:20px !important}
+          .about-grid{grid-template-columns:1fr !important;gap:40px !important}
+          .pricing-grid{grid-template-columns:1fr !important}
+          .stats-grid{grid-template-columns:1fr !important}
+          .steps-grid{grid-template-columns:1fr !important}
+          .footer-inner{flex-direction:column !important;text-align:center !important}
+          .hero-subtitle{font-size:11px !important;flex-wrap:wrap !important}
+          .hero-subtitle span:first-child,.hero-subtitle span:last-child{display:none !important}
+        }
       `}</style>
     </section>
   );
@@ -610,6 +628,7 @@ const Stats = () => {
           </h2>
         </AnimatedText>
         <div
+          className="stats-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
@@ -756,6 +775,7 @@ const Services = () => {
           </h2>
         </AnimatedText>
         <div
+          className="steps-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
@@ -1038,6 +1058,7 @@ const Pricing = () => {
           </p>
         </AnimatedText>
         <div
+          className="pricing-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -1252,6 +1273,7 @@ const About = () => (
     style={{ padding: "120px 40px", background: COLORS.cream }}
   >
     <div
+      className="about-grid"
       style={{
         maxWidth: "900px",
         margin: "0 auto",
@@ -1875,6 +1897,7 @@ const Footer = () => (
     }}
   >
     <div
+      className="footer-inner"
       style={{
         maxWidth: "1100px",
         margin: "0 auto",
