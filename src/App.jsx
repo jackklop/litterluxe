@@ -405,8 +405,8 @@ const Hero = () => {
               fontWeight: 400,
             }}
           >
-            Professional deep cleaning for your Litter-Robot. We swap, sanitize,
-            and restore — so you never have to scrub again.
+            Professional deep cleaning for your Litter-Robot. On-site service or
+            full globe swap — so you never have to scrub again.
           </p>
         </AnimatedText>
         <AnimatedText delay={0.6}>
@@ -550,20 +550,18 @@ const Hero = () => {
 
 const Stats = () => {
   const [ref, vis] = useInView(0.2);
-  const [c1, s1] = useCountUp(4, 1500, true);
   const [c2, s2] = useCountUp(100, 2000, true);
   useEffect(() => {
     if (vis) {
-      s1();
       s2();
     }
-  }, [vis, s1, s2]);
+  }, [vis, s2]);
   const stats = [
     {
-      value: `${c1}+ hrs`,
-      label: "Studio restoration per globe",
-      icon: "🧼",
-      desc: "Every globe goes through a meticulous multi-hour deep clean",
+      value: "On-Site",
+      label: "We come to you",
+      icon: "🏠",
+      desc: "Professional cleaning right in your home — no hauling your unit anywhere",
     },
     {
       value: `${c2}%`,
@@ -572,10 +570,10 @@ const Stats = () => {
       desc: "Enzyme cleaners, no harsh chemicals, ever",
     },
     {
-      value: "Philly+",
-      label: "Service area",
-      icon: "📍",
-      desc: "Philadelphia & surrounding suburbs",
+      value: "Healthier",
+      label: "For you & your cat",
+      icon: "🐾",
+      desc: "Dirty litter boxes harbor bacteria that can affect your cat's health and yours. We follow best hygiene practices to keep everyone safe",
     },
   ];
   return (
@@ -708,14 +706,14 @@ const Services = () => {
     {
       num: "01",
       title: "We Arrive",
-      desc: "We come to you with a fresh, sanitized globe and waste drawer — ready to swap. Minimal disruption, maximum clean.",
+      desc: "We come to your home with everything needed for a professional deep clean. No prep required on your end — just point us to the Litter-Robot.",
       icon: "🚗",
     },
     {
       num: "02",
-      title: "We Swap & Clean",
-      desc: "Dirty globe and drawer come out, freshly sanitized ones that meet our quality standards go in. We then deep clean the base, sensors, and surrounding area on-site.",
-      icon: "🔄",
+      title: "We Deep Clean",
+      desc: "We disassemble your Litter-Robot, apply enzyme cleaner to break down buildup, then scrub and wet vac the globe, drawer, base, sensors, and gaskets while the enzymes work.",
+      icon: "🧼",
     },
     {
       num: "03",
@@ -725,9 +723,9 @@ const Services = () => {
     },
     {
       num: "04",
-      title: "We Refresh",
-      desc: "Back at our studio, your old globe and drawer go through a 3–4 hour restoration — enzyme soaking, deep scrubbing, steam cleaning, and thorough drying before they're cleared for the next visit.",
-      icon: "🧼",
+      title: "Monthly Members: Your Choice",
+      desc: "On the Monthly plan, you choose: we deep clean on-site, or we swap your globe with a studio-restored one and take yours home for a multi-hour restoration. Either way, it's the deepest clean possible.",
+      icon: "🔄",
     },
   ];
   return (
@@ -788,8 +786,8 @@ const Services = () => {
                 style={{
                   padding: "40px 32px",
                   borderRadius: "20px",
-                  background: COLORS.white,
-                  border: `1px solid ${COLORS.charcoal}06`,
+                  background: i === 3 ? COLORS.charcoal : COLORS.white,
+                  border: i === 3 ? "none" : `1px solid ${COLORS.charcoal}06`,
                   transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
                   cursor: "default",
                   position: "relative",
@@ -812,7 +810,7 @@ const Services = () => {
                     fontFamily: "'Playfair Display', Georgia, serif",
                     fontSize: "64px",
                     fontWeight: 400,
-                    color: `${COLORS.sage}12`,
+                    color: i === 3 ? `${COLORS.sage}25` : `${COLORS.sage}12`,
                     position: "absolute",
                     top: "12px",
                     right: "20px",
@@ -821,6 +819,25 @@ const Services = () => {
                 >
                   {step.num}
                 </div>
+                {i === 3 && (
+                  <div
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "10px",
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      color: COLORS.charcoal,
+                      background: COLORS.gold,
+                      padding: "4px 12px",
+                      borderRadius: "100px",
+                      alignSelf: "flex-start",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    Monthly Exclusive
+                  </div>
+                )}
                 <div style={{ fontSize: "32px", marginBottom: "20px" }}>
                   {step.icon}
                 </div>
@@ -842,7 +859,7 @@ const Services = () => {
                     fontFamily: "'Playfair Display', Georgia, serif",
                     fontSize: "24px",
                     fontWeight: 500,
-                    color: COLORS.charcoal,
+                    color: i === 3 ? COLORS.cream : COLORS.charcoal,
                     marginBottom: "12px",
                   }}
                 >
@@ -852,7 +869,7 @@ const Services = () => {
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: "15px",
-                    color: COLORS.warmGray,
+                    color: i === 3 ? `${COLORS.cream}70` : COLORS.warmGray,
                     lineHeight: 1.7,
                   }}
                 >
@@ -955,10 +972,10 @@ const Pricing = () => {
       name: "Monthly",
       price: "100",
       interval: "/ visit",
-      desc: "Best value. Your Litter-Robot stays pristine year-round.",
+      desc: "Best value. Choose on-site deep cleaning or our premium globe swap — your call each visit.",
       features: [
-        "Full globe & drawer swap",
-        "Deep base cleaning",
+        "On-site deep clean or globe swap (your choice)",
+        "Deep base, sensor & gasket cleaning",
         "New carbon filter included",
         "Exterior wipe down",
         "Mat vacuuming",
@@ -968,15 +985,18 @@ const Pricing = () => {
       ],
       highlight: true,
       badge: "Best Value",
+      note: "First visit is a Reset Clean ($150)",
     },
     {
       id: "quarterly",
       name: "Quarterly",
       price: "125",
       interval: "/ visit",
-      desc: "Every 3 months. Great maintenance rhythm.",
+      desc: "On-site deep clean every 3 months. Great maintenance rhythm.",
       features: [
-        "Full globe & drawer swap",
+        "On-site globe & drawer deep clean",
+        "Enzyme treatment with dwell time",
+        "Wet vac extraction",
         "Deep base cleaning",
         "New carbon filter included",
         "Exterior wipe down",
@@ -989,9 +1009,11 @@ const Pricing = () => {
       name: "Reset Clean",
       price: "150",
       interval: "one-time",
-      desc: "First visit or haven't cleaned in 3+ months.",
+      desc: "Your first visit. Required for all new customers — intensive on-site restoration to start fresh.",
       features: [
-        "Full globe & drawer swap",
+        "Intensive on-site globe & drawer cleaning",
+        "Extended enzyme soak & multiple passes",
+        "Wet vac extraction",
         "Intensive base deep clean",
         "New carbon filter included",
         "Sensor & gasket detailing",
@@ -1054,7 +1076,8 @@ const Pricing = () => {
               margin: "0 auto 64px",
             }}
           >
-            No hidden fees. No contracts. Just a sparkling clean Litter-Robot.
+            No hidden fees. No long-term contracts. Just a sparkling clean
+            Litter-Robot.
           </p>
         </AnimatedText>
         <div
@@ -1164,11 +1187,27 @@ const Pricing = () => {
                       ? `${COLORS.cream}90`
                       : COLORS.warmGray,
                     lineHeight: 1.6,
-                    marginBottom: "32px",
+                    marginBottom: plan.note ? "12px" : "32px",
                   }}
                 >
                   {plan.desc}
                 </p>
+                {plan.note && (
+                  <div
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      color: COLORS.gold,
+                      marginBottom: "32px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                    }}
+                  >
+                    <span style={{ fontSize: "14px" }}>✦</span> {plan.note}
+                  </div>
+                )}
                 <div
                   style={{
                     borderTop: `1px solid ${plan.highlight ? `${COLORS.cream}12` : `${COLORS.charcoal}08`}`,
@@ -1262,6 +1301,38 @@ const Pricing = () => {
             </AnimatedText>
           ))}
         </div>
+        <AnimatedText delay={0.5}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "14px",
+              color: COLORS.warmGray,
+              textAlign: "center",
+              marginTop: "40px",
+            }}
+          >
+            <span style={{ color: COLORS.sage, fontWeight: 600 }}>
+              Multiple units?
+            </span>{" "}
+            Each additional Litter-Robot at the same address is $25 off.
+          </p>
+        </AnimatedText>
+        <AnimatedText delay={0.6}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "14px",
+              color: COLORS.warmGray,
+              textAlign: "center",
+              marginTop: "12px",
+            }}
+          >
+            <span style={{ color: COLORS.gold, fontWeight: 600 }}>
+              ✦ $5 from every service
+            </span>{" "}
+            is donated to ACCT Philly to support local rescue cats.
+          </p>
+        </AnimatedText>
       </div>
     </section>
   );
@@ -1328,10 +1399,10 @@ const About = () => (
               marginBottom: "20px",
             }}
           >
-            I own a Litter-Robot. I love the technology. But the deep cleaning?
-            Taking the whole thing apart, scrubbing dried litter out of every
-            corner, dealing with the waste port buildup — that's where I drew
-            the line.
+            I own multiple Litter-Robots. I love the technology. But the deep
+            cleaning? Taking the whole thing apart, scrubbing dried litter out
+            of every corner, dealing with the waste port buildup — that's where
+            I drew the line.
           </p>
         </AnimatedText>
         <AnimatedText delay={0.3}>
@@ -1345,8 +1416,8 @@ const About = () => (
           >
             LitterLuxe was born out of that exact frustration. We use
             professional-grade enzyme cleaners, specialized wet/dry vacuums, and
-            a globe-swap system designed for minimal disruption. Your cat never
-            skips a beat.
+            for monthly members, a globe-swap system so your unit gets a full
+            studio restoration every single visit.
           </p>
         </AnimatedText>
       </div>
@@ -1413,6 +1484,14 @@ const FAQ = () => {
       a: "We currently service Litter-Robot 3 and Litter-Robot 4 models. More models and automatic litter boxes are coming soon — if you have a different model, reach out and request it. We're always expanding.",
     },
     {
+      q: "What's the difference between on-site cleaning and the globe swap?",
+      a: "Every visit includes a thorough on-site deep clean — we disassemble, enzyme treat, scrub, and wet vac everything right in your home. Monthly members also have the option to swap their globe with a studio-restored one from our inventory. Some people prefer watching us clean it on the spot, others prefer the swap. It's your call each visit.",
+    },
+    {
+      q: "How does the first visit work?",
+      a: "Every new customer starts with a Reset Clean ($150). This is an intensive on-site deep clean that gets your unit back to baseline. After that, you can sign up for a Monthly ($100/visit) or Quarterly ($125/visit) plan to keep it that way.",
+    },
+    {
       q: "Do I need to be home during the cleaning?",
       a: "We prefer that you're home, but it's not required as long as we have access to your home. If we arrive and can't get in, the visit will still be charged in full.",
     },
@@ -1422,31 +1501,27 @@ const FAQ = () => {
     },
     {
       q: "What if I haven't cleaned my Litter-Robot in over 6 months?",
-      a: "No judgment — that's exactly why we exist. Heavily soiled units are booked as a Reset Clean ($150). We've seen it all and we'll have it looking brand new.",
+      a: "No judgment — that's exactly why we exist. Heavily soiled units are booked as a Reset Clean ($150). We've seen it all and we'll get it looking great.",
     },
     {
       q: "What areas do you serve?",
       a: "We serve Philadelphia and the surrounding suburbs including the Main Line, Montgomery County, Delaware County, and parts of Bucks and Chester counties.",
     },
     {
-      q: "How does the globe swap work?",
-      a: "We arrive with a pre-cleaned, sanitized globe and waste drawer. We swap your dirty ones with the clean set, then take the dirty ones back to our studio for a thorough deep clean. Your unit is never without a globe.",
-    },
-    {
-      q: "What about the quality of the swap globe?",
-      a: "Every globe we deliver is professionally cleaned and inspected for quality. If your globe shows significant wear, we'll replace it from our maintained inventory at no extra charge. You'll always receive a globe in great condition.",
-    },
-    {
       q: "I have multiple Litter-Robots. Do you offer a discount?",
-      a: "Yes! Additional units at the same address are discounted since we're already there. Reach out and we'll set up a custom plan for your multi-robot household.",
+      a: "Yes! Each additional unit at the same address is $25 off — so $75/visit for Monthly, $100/visit for Quarterly, or $125 for an additional Reset Clean. Since we're already at your home, it's a no-brainer.",
     },
     {
       q: "Are there any hidden fees or extra charges?",
-      a: "Never. Your price covers everything — the globe swap, deep cleaning, all products, the finishing scent, and the studio cleaning of your old globe. One flat price, no surprises.",
+      a: "Never. Your price covers everything — all cleaning products, new carbon filter, the finishing scent, and for Monthly members, the full studio restoration of your globe. One flat price, no surprises.",
     },
     {
       q: "Can I cancel or pause my recurring service?",
-      a: "Yes, anytime. No contracts, no cancellation fees. We just ask for at least one week's notice before your next scheduled visit. Cancellations with less than a week's notice may be charged in full.",
+      a: "Yes, anytime. No contracts, no cancellation fees. We just ask for at least one week's notice before your next scheduled visit. If you're a Monthly member using the globe swap, we'll retrieve our loaner globe at your final visit. Cancellations with less than one week's notice may be charged in full.",
+    },
+    {
+      q: "Can I upgrade from Quarterly to Monthly?",
+      a: "Absolutely! You can upgrade at any time. If you'd like to use the globe swap option, we'll bring your first loaner globe on your next visit.",
     },
   ];
   return (
@@ -1542,7 +1617,7 @@ const FAQ = () => {
                 </div>
                 <div
                   style={{
-                    maxHeight: oi === i ? "200px" : "0",
+                    maxHeight: oi === i ? "300px" : "0",
                     overflow: "hidden",
                     transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
                     opacity: oi === i ? 1 : 0,
@@ -1832,19 +1907,19 @@ const WaitlistForm = () => {
             value="Reset Clean — $150"
             style={{ background: COLORS.charcoal, color: COLORS.cream }}
           >
-            Reset Clean — $150
+            Reset Clean — $150 (one-time, on-site)
           </option>
           <option
-            value="Monthly — $100/visit"
+            value="Monthly — $100/visit (globe swap)"
             style={{ background: COLORS.charcoal, color: COLORS.cream }}
           >
-            Monthly — $100/visit
+            Monthly — $100/visit (globe swap)
           </option>
           <option
-            value="Quarterly — $125/visit"
+            value="Quarterly — $125/visit (on-site)"
             style={{ background: COLORS.charcoal, color: COLORS.cream }}
           >
-            Quarterly — $125/visit
+            Quarterly — $125/visit (on-site clean)
           </option>
         </select>
         <button
@@ -2007,7 +2082,7 @@ const Terms = () => {
         </div>
         <div
           style={{
-            maxHeight: expanded ? "2000px" : "0",
+            maxHeight: expanded ? "3000px" : "0",
             overflow: "hidden",
             transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
             opacity: expanded ? 1 : 0,
@@ -2032,24 +2107,58 @@ const Terms = () => {
               <br />
               LitterLuxe provides professional cleaning services for
               Litter-Robot automatic litter boxes. Our service includes on-site
-              base cleaning, globe and waste drawer swapping, exterior wipe
-              down, mat vacuuming, and a pet-safe finishing scent. Service is
-              limited to cleaning — we are not responsible for diagnosing or
-              repairing mechanical or electrical issues with your unit.
+              deep cleaning using enzyme treatments and wet/dry extraction, base
+              cleaning, exterior wipe down, mat vacuuming, and a pet-safe
+              finishing scent. Monthly plan members may also opt for a globe and
+              waste drawer swap with studio-restored units instead of on-site
+              globe cleaning. Service is limited to cleaning — we are not
+              responsible for diagnosing or repairing mechanical or electrical
+              issues with your unit.
             </p>
 
             <p>
               <strong style={{ color: `${COLORS.cream}60` }}>
-                Globe Swap & Quality
+                Service Tiers
               </strong>
               <br />
-              All swap globes and waste drawers are LitterLuxe maintained
-              inventory. Each globe is professionally cleaned, inspected, and
-              must meet our quality standards before being delivered. We
-              guarantee globe quality for 48 hours after service. If you
-              experience any issues within this window, contact us and we'll
-              make it right at no charge. Beyond 48 hours, normal wear and tear
-              from regular use is the responsibility of the customer.
+              <em style={{ color: `${COLORS.cream}50` }}>
+                Reset Clean ($150, required first visit):
+              </em>{" "}
+              Intensive on-site deep cleaning required for all new customers.
+              Includes extended enzyme soak, multiple cleaning passes, and full
+              base restoration.
+              <br />
+              <br />
+              <em style={{ color: `${COLORS.cream}50` }}>
+                Monthly Plan ($100/visit):
+              </em>{" "}
+              Choose between on-site deep cleaning or globe swap with a
+              LitterLuxe studio-restored unit each visit, plus full on-site base
+              cleaning. Cancel anytime with one week's notice.
+              <br />
+              <br />
+              <em style={{ color: `${COLORS.cream}50` }}>
+                Quarterly Plan ($125/visit):
+              </em>{" "}
+              On-site deep cleaning of your globe, drawer, and base using enzyme
+              treatments and wet/dry extraction. Cancel anytime with one week's
+              notice.
+            </p>
+
+            <p>
+              <strong style={{ color: `${COLORS.cream}60` }}>
+                Globe Swap — Monthly Plan
+              </strong>
+              <br />
+              Monthly plan members who opt for the globe swap receive a
+              LitterLuxe-owned loaner globe and waste drawer. These units are
+              professionally cleaned, inspected, and must meet our quality
+              standards before delivery. The loaner globe remains LitterLuxe
+              property. Upon cancellation, we will retrieve our loaner globe and
+              return your original globe (cleaned) at your final visit. If our
+              loaner globe is not returned, you may be charged the replacement
+              cost. Monthly members may switch between on-site cleaning and
+              globe swap at any time.
             </p>
 
             <p>
@@ -2068,10 +2177,12 @@ const Terms = () => {
                 Cancellation Policy
               </strong>
               <br />
-              You may cancel or pause your recurring service at any time. We ask
-              for at least one week's notice before your next scheduled visit.
-              Cancellations with less than one week's notice may be charged in
-              full.
+              All recurring plans (Monthly and Quarterly) may be canceled
+              anytime with at least one week's notice before your next scheduled
+              visit. Cancellations with less than one week's notice may be
+              charged in full. If you are a Monthly member using the globe swap,
+              we will retrieve our loaner globe at your final visit. There are
+              no cancellation fees.
             </p>
 
             <p>
@@ -2080,9 +2191,9 @@ const Terms = () => {
               </strong>
               <br />
               All prices are flat-rate with no hidden fees. Your quoted price
-              covers the complete service including all cleaning products, globe
-              swap, and studio restoration. Payment is due at the time of
-              service.
+              covers the complete service including all cleaning products, new
+              carbon filter, and for Monthly members, the studio restoration of
+              your globe. Payment is due at the time of service.
             </p>
 
             <p>
