@@ -2594,6 +2594,7 @@ const BookingModal = ({ open, onClose }) => {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -2618,6 +2619,7 @@ const BookingModal = ({ open, onClose }) => {
   const reset = () => {
     setStep(1);
     setSubmitted(false);
+    setError(null);
     setData({
       name: "",
       email: "",
@@ -2637,6 +2639,7 @@ const BookingModal = ({ open, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
     const fd = new FormData();
     Object.entries(data).forEach(([k, v]) => fd.append(k, v));
     try {
@@ -2645,9 +2648,18 @@ const BookingModal = ({ open, onClose }) => {
         body: fd,
         headers: { Accept: "application/json" },
       });
-      if (res.ok) setSubmitted(true);
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        setError(
+          "Something went wrong on our end. Please try again, or call us directly.",
+        );
+      }
     } catch (err) {
       console.error(err);
+      setError(
+        "Looks like there's a connection issue. Please try again, or give us a call.",
+      );
     }
     setSubmitting(false);
   };
@@ -2716,13 +2728,12 @@ const BookingModal = ({ open, onClose }) => {
         </button>
 
         {submitted ? (
-          <div style={{ textAlign: "center", padding: "20px 0" }}>
+          <div style={{ textAlign: "center", padding: "8px 0" }}>
             <div
               style={{
-                fontSize: "48px",
-                marginBottom: "16px",
-                width: "80px",
-                height: "80px",
+                fontSize: "36px",
+                width: "72px",
+                height: "72px",
                 borderRadius: "50%",
                 background: `${COLORS.sage}20`,
                 color: COLORS.sage,
@@ -2737,13 +2748,14 @@ const BookingModal = ({ open, onClose }) => {
             <h3
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "28px",
+                fontSize: "30px",
                 fontWeight: 500,
                 color: COLORS.charcoal,
                 marginBottom: "12px",
+                lineHeight: 1.2,
               }}
             >
-              You're booked!
+              Got it, {data.name?.split(" ")[0] || "there"}!
             </h3>
             <p
               style={{
@@ -2751,12 +2763,130 @@ const BookingModal = ({ open, onClose }) => {
                 fontSize: "15px",
                 color: COLORS.warmGray,
                 lineHeight: 1.6,
-                marginBottom: "24px",
+                marginBottom: "28px",
               }}
             >
-              We'll reach out within 24 hours to confirm your visit and schedule
-              a time that works for you.
+              Your booking request is in. Here's exactly what happens next:
             </p>
+
+            {/* Numbered next steps */}
+            <div
+              style={{
+                textAlign: "left",
+                background: COLORS.cream,
+                borderRadius: "16px",
+                padding: "20px 24px",
+                marginBottom: "24px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
+            >
+              {[
+                {
+                  n: "1",
+                  title: "We text or call you within 24 hours",
+                  body: `From ${PLACEHOLDERS.phoneNumber} — to confirm and pick a time that works.`,
+                },
+                {
+                  n: "2",
+                  title: "You pick a time",
+                  body: "Most visits scheduled within 3–5 days of booking.",
+                },
+                {
+                  n: "3",
+                  title: "We come and clean",
+                  body: "We bring everything. No prep on your end.",
+                },
+              ].map((s, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    gap: "14px",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <div
+                    style={{
+                      flexShrink: 0,
+                      width: "26px",
+                      height: "26px",
+                      borderRadius: "50%",
+                      background: COLORS.sage,
+                      color: COLORS.white,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      marginTop: "1px",
+                    }}
+                  >
+                    {s.n}
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        color: COLORS.charcoal,
+                        marginBottom: "2px",
+                      }}
+                    >
+                      {s.title}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: "13px",
+                        color: COLORS.warmGray,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {s.body}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "13px",
+                color: COLORS.warmGray,
+                marginBottom: "20px",
+                lineHeight: 1.5,
+              }}
+            >
+              Don't hear from us? Reach out directly at{" "}
+              <a
+                href={`tel:${PLACEHOLDERS.phoneNumber.replace(/\D/g, "")}`}
+                style={{
+                  color: COLORS.sage,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
+                {PLACEHOLDERS.phoneNumber}
+              </a>{" "}
+              or{" "}
+              <a
+                href={`mailto:${PLACEHOLDERS.email}`}
+                style={{
+                  color: COLORS.sage,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
+                {PLACEHOLDERS.email}
+              </a>
+              .
+            </p>
+
             <button
               onClick={handleClose}
               style={{
@@ -2769,9 +2899,14 @@ const BookingModal = ({ open, onClose }) => {
                 fontSize: "14px",
                 fontWeight: 600,
                 cursor: "pointer",
+                transition: "background 0.3s",
               }}
+              onMouseEnter={(e) => (e.target.style.background = COLORS.sage)}
+              onMouseLeave={(e) =>
+                (e.target.style.background = COLORS.charcoal)
+              }
             >
-              Done
+              Got it
             </button>
           </div>
         ) : (
@@ -2982,6 +3117,33 @@ const BookingModal = ({ open, onClose }) => {
                     Not sure yet — help me decide
                   </option>
                 </select>
+                {error && (
+                  <div
+                    style={{
+                      padding: "14px 18px",
+                      borderRadius: "12px",
+                      background: `${COLORS.gold}15`,
+                      border: `1px solid ${COLORS.gold}40`,
+                      color: COLORS.charcoal,
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "13px",
+                      lineHeight: 1.5,
+                      marginTop: "4px",
+                    }}
+                  >
+                    {error}{" "}
+                    <a
+                      href={`tel:${PLACEHOLDERS.phoneNumber.replace(/\D/g, "")}`}
+                      style={{
+                        color: COLORS.sage,
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      {PLACEHOLDERS.phoneNumber}
+                    </a>
+                  </div>
+                )}
                 <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
                   <button
                     type="button"
@@ -3043,7 +3205,8 @@ const BookingModal = ({ open, onClose }) => {
                 lineHeight: 1.5,
               }}
             >
-              We'll respond within 24 hours to confirm. No spam, ever.
+              We'll text or call within 24 hours to schedule. Your info stays
+              with us — no spam, ever.
             </p>
           </>
         )}
