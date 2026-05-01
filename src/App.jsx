@@ -12,6 +12,138 @@ const COLORS = {
   offWhite: "#F0EDE8",
 };
 
+// ============ PLACEHOLDERS — Replace these later ============
+const PLACEHOLDERS = {
+  founderPhoto: "/images/founder.jpg",
+  globeBefore: "/images/globe-before.jpg",
+  globeAfter: "/images/globe-after.jpg",
+  baseBefore: "/images/base-before.jpg",
+  baseAfter: "/images/base-after.jpg",
+  processPhoto: "https://placehold.co/800x600/C5D4BC/2A2A28?text=Process+Photo",
+  phoneNumber: "(215) 555-0100",
+  email: "hello@litterluxe.co",
+  instagram: "@litterluxe",
+  reviewCount: 0, // will pull in real Google review count later
+};
+
+const SERVICE_ZIPS = [
+  // Philadelphia core
+  "19102",
+  "19103",
+  "19104",
+  "19106",
+  "19107",
+  "19111",
+  "19114",
+  "19115",
+  "19116",
+  "19118",
+  "19119",
+  "19120",
+  "19121",
+  "19122",
+  "19123",
+  "19124",
+  "19125",
+  "19126",
+  "19127",
+  "19128",
+  "19129",
+  "19130",
+  "19131",
+  "19132",
+  "19133",
+  "19134",
+  "19135",
+  "19136",
+  "19137",
+  "19138",
+  "19139",
+  "19140",
+  "19141",
+  "19142",
+  "19143",
+  "19144",
+  "19145",
+  "19146",
+  "19147",
+  "19148",
+  "19149",
+  "19150",
+  "19151",
+  "19152",
+  "19153",
+  "19154",
+  // Main Line / Montgomery
+  "19010",
+  "19035",
+  "19041",
+  "19066",
+  "19072",
+  "19085",
+  "19087",
+  "19096",
+  "19004",
+  "19038",
+  "19046",
+  "19075",
+  "19083",
+  "19082",
+  "19422",
+  "19428",
+  "19462",
+  "19444",
+  "19401",
+  "19403",
+  "19405",
+  "19406",
+  "19426",
+  "19460",
+  "19481",
+  // Delaware County
+  "19013",
+  "19018",
+  "19023",
+  "19026",
+  "19033",
+  "19036",
+  "19050",
+  "19061",
+  "19063",
+  "19064",
+  "19078",
+  "19079",
+  "19081",
+  "19086",
+  "19094",
+  // Bucks (lower)
+  "18966",
+  "18974",
+  "18976",
+  "19006",
+  "19020",
+  "19030",
+  "19040",
+  "19047",
+  "19053",
+  "19054",
+  "19055",
+  "19056",
+  "19067",
+  // Chester (eastern)
+  "19301",
+  "19312",
+  "19317",
+  "19319",
+  "19333",
+  "19341",
+  "19355",
+  "19380",
+  "19382",
+  "19355",
+];
+
+// ============ HOOKS ============
 const useInView = (threshold = 0.15) => {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -28,41 +160,26 @@ const useInView = (threshold = 0.15) => {
   return [ref, isVisible];
 };
 
-const useCountUp = (end, duration = 2000, startOnView = false) => {
-  const [count, setCount] = useState(0);
-  const [started, setStarted] = useState(!startOnView);
-  const start = useCallback(() => setStarted(true), []);
-  useEffect(() => {
-    if (!started) return;
-    let startTime = null;
-    const step = (ts) => {
-      if (!startTime) startTime = ts;
-      const p = Math.min((ts - startTime) / duration, 1);
-      setCount(Math.floor(p * end));
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [started, end, duration]);
-  return [count, start];
-};
-
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-  return isMobile;
-};
+// const useCountUp = (end, duration = 2000, startOnView = false) => {
+//   const [count, setCount] = useState(0);
+//   const [started, setStarted] = useState(!startOnView);
+//   const start = useCallback(() => setStarted(true), []);
+//   useEffect(() => {
+//     if (!started) return;
+//     let startTime = null;
+//     const step = (ts) => {
+//       if (!startTime) startTime = ts;
+//       const p = Math.min((ts - startTime) / duration, 1);
+//       setCount(Math.floor(p * end));
+//       if (p < 1) requestAnimationFrame(step);
+//     };
+//     requestAnimationFrame(step);
+//   }, [started, end, duration]);
+//   return [count, start];
+// };
 
 const AnimatedText = ({ children, delay = 0, className = "" }) => {
   const [ref, isVisible] = useInView(0.1);
-  const isMobile = useIsMobile();
-  // Cut delays and duration roughly in half on mobile for snappier reveal
-  const effectiveDelay = isMobile ? delay * 0.4 : delay;
-  const duration = isMobile ? "0.5s" : "0.9s";
   return (
     <div
       ref={ref}
@@ -70,7 +187,7 @@ const AnimatedText = ({ children, delay = 0, className = "" }) => {
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? "translateY(0px)" : "translateY(40px)",
-        transition: `all ${duration} cubic-bezier(0.22, 1, 0.36, 1) ${effectiveDelay}s`,
+        transition: `all 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
       }}
     >
       {children}
@@ -78,6 +195,7 @@ const AnimatedText = ({ children, delay = 0, className = "" }) => {
   );
 };
 
+// ============ DECORATIVE ============
 const Particles = () => {
   const canvasRef = useRef(null);
   useEffect(() => {
@@ -177,50 +295,183 @@ const GrainOverlay = ({ opacity = 0.3 }) => (
   />
 );
 
-const Nav = () => {
+// ============ NAV ============
+const Nav = ({ onBookClick }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", h);
     return () => window.removeEventListener("scroll", h);
   }, []);
-  const scrollTo = (id) =>
+  const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  const links = ["services", "pricing", "about", "faq", "contact"];
+    setMobileOpen(false);
+  };
+  const links = ["results", "services", "pricing", "about", "faq"];
+
   return (
-    <nav
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        padding: scrolled ? "16px 40px" : "28px 40px",
-        background: scrolled ? "rgba(250,248,245,0.92)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(42,42,40,0.06)" : "none",
-        transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <div
-        onClick={() => scrollTo("hero")}
+    <>
+      <nav
         style={{
-          fontFamily: "'Playfair Display', Georgia, serif",
-          fontSize: "22px",
-          fontWeight: 600,
-          color: COLORS.charcoal,
-          cursor: "pointer",
-          letterSpacing: "-0.02em",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          padding: scrolled ? "16px 40px" : "28px 40px",
+          background: scrolled ? "rgba(250,248,245,0.92)" : "transparent",
+          backdropFilter: scrolled ? "blur(20px)" : "none",
+          borderBottom: scrolled ? "1px solid rgba(42,42,40,0.06)" : "none",
+          transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        Litter<span style={{ color: COLORS.sage }}>Luxe</span>
-      </div>
+        <div
+          onClick={() => scrollTo("hero")}
+          style={{
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontSize: "22px",
+            fontWeight: 600,
+            color: COLORS.charcoal,
+            cursor: "pointer",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          Litter<span style={{ color: COLORS.sage }}>Luxe</span>
+        </div>
+        <div
+          className="nav-links"
+          style={{ display: "flex", gap: "36px", alignItems: "center" }}
+        >
+          {links.map((l) => (
+            <span
+              key={l}
+              onClick={() => scrollTo(l)}
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "13px",
+                fontWeight: 500,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: COLORS.charcoal,
+                cursor: "pointer",
+                opacity: 0.7,
+                transition: "opacity 0.3s",
+              }}
+              onMouseEnter={(e) => (e.target.style.opacity = 1)}
+              onMouseLeave={(e) => (e.target.style.opacity = 0.7)}
+            >
+              {l}
+            </span>
+          ))}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+          <a
+            href={`tel:${PLACEHOLDERS.phoneNumber.replace(/\D/g, "")}`}
+            className="nav-phone"
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: COLORS.charcoal,
+              textDecoration: "none",
+              opacity: 0.8,
+            }}
+          >
+            {PLACEHOLDERS.phoneNumber}
+          </a>
+          <button
+            className="nav-cta"
+            onClick={onBookClick}
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "13px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: COLORS.cream,
+              background: COLORS.charcoal,
+              border: "none",
+              padding: "12px 28px",
+              borderRadius: "100px",
+              cursor: "pointer",
+              transition: "all 0.3s",
+            }}
+            onMouseEnter={(e) => (e.target.style.background = COLORS.sage)}
+            onMouseLeave={(e) => (e.target.style.background = COLORS.charcoal)}
+          >
+            Book Now
+          </button>
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+            style={{
+              display: "none",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: "8px",
+              flexDirection: "column",
+              gap: "5px",
+            }}
+          >
+            <span
+              style={{
+                width: "22px",
+                height: "2px",
+                background: COLORS.charcoal,
+                transition: "all 0.3s",
+                transform: mobileOpen
+                  ? "translateY(7px) rotate(45deg)"
+                  : "none",
+              }}
+            />
+            <span
+              style={{
+                width: "22px",
+                height: "2px",
+                background: COLORS.charcoal,
+                transition: "all 0.3s",
+                opacity: mobileOpen ? 0 : 1,
+              }}
+            />
+            <span
+              style={{
+                width: "22px",
+                height: "2px",
+                background: COLORS.charcoal,
+                transition: "all 0.3s",
+                transform: mobileOpen
+                  ? "translateY(-7px) rotate(-45deg)"
+                  : "none",
+              }}
+            />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu drawer */}
       <div
-        className="nav-links"
-        style={{ display: "flex", gap: "36px", alignItems: "center" }}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          background: COLORS.cream,
+          zIndex: 999,
+          paddingTop: "80px",
+          paddingBottom: "32px",
+          transform: mobileOpen ? "translateY(0)" : "translateY(-100%)",
+          transition: "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+          boxShadow: mobileOpen ? "0 20px 40px rgba(0,0,0,0.08)" : "none",
+          display: "none",
+          flexDirection: "column",
+        }}
+        className="mobile-menu"
       >
         {links.map((l) => (
           <span
@@ -228,49 +479,39 @@ const Nav = () => {
             onClick={() => scrollTo(l)}
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "13px",
+              fontSize: "15px",
               fontWeight: 500,
               textTransform: "uppercase",
-              letterSpacing: "0.1em",
+              letterSpacing: "0.12em",
               color: COLORS.charcoal,
+              padding: "18px 24px",
+              borderBottom: `1px solid ${COLORS.charcoal}08`,
               cursor: "pointer",
-              opacity: 0.7,
-              transition: "opacity 0.3s",
             }}
-            onMouseEnter={(e) => (e.target.style.opacity = 1)}
-            onMouseLeave={(e) => (e.target.style.opacity = 0.7)}
           >
             {l}
           </span>
         ))}
+        <a
+          href={`tel:${PLACEHOLDERS.phoneNumber.replace(/\D/g, "")}`}
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "15px",
+            fontWeight: 500,
+            color: COLORS.sage,
+            padding: "18px 24px",
+            textDecoration: "none",
+          }}
+        >
+          📞 {PLACEHOLDERS.phoneNumber}
+        </a>
       </div>
-      <button
-        className="nav-cta"
-        onClick={() => scrollTo("contact")}
-        style={{
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: "13px",
-          fontWeight: 600,
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          color: COLORS.cream,
-          background: COLORS.charcoal,
-          border: "none",
-          padding: "12px 28px",
-          borderRadius: "100px",
-          cursor: "pointer",
-          transition: "all 0.3s",
-        }}
-        onMouseEnter={(e) => (e.target.style.background = COLORS.sage)}
-        onMouseLeave={(e) => (e.target.style.background = COLORS.charcoal)}
-      >
-        Join Waitlist
-      </button>
-    </nav>
+    </>
   );
 };
 
-const Hero = () => {
+// ============ HERO ============
+const Hero = ({ onBookClick }) => {
   const [mp, setMp] = useState({ x: 0, y: 0 });
   useEffect(() => {
     const h = (e) =>
@@ -382,7 +623,7 @@ const Hero = () => {
             <span
               style={{ width: "40px", height: "1px", background: COLORS.sage }}
             />
-            Philadelphia's Premier Litter-Robot Cleaning
+            A cleaner throne for your majesty
             <span
               style={{ width: "40px", height: "1px", background: COLORS.sage }}
             />
@@ -392,74 +633,61 @@ const Hero = () => {
           <h1
             style={{
               fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "clamp(48px, 8vw, 96px)",
+              fontSize: "clamp(44px, 7.5vw, 88px)",
               fontWeight: 500,
               color: COLORS.charcoal,
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
               maxWidth: "900px",
-              margin: "0 auto 24px",
+              margin: "0 auto 32px",
             }}
           >
-            We clean your
+            Professional Litter-Robot cleaning,
             <br />
             <span style={{ fontStyle: "italic", color: COLORS.sage }}>
-              Litter-Robot
+              at your home in Philly.
             </span>
           </h1>
-        </AnimatedText>
-        <AnimatedText delay={0.4}>
-          <p
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "20px",
-              fontWeight: 500,
-              color: COLORS.charcoal,
-              lineHeight: 1.5,
-              maxWidth: "620px",
-              margin: "0 auto 16px",
-              letterSpacing: "-0.01em",
-            }}
-          >
-            A cleaner throne for your majesty — so you don't have to scrub it
-            yourself.
-          </p>
         </AnimatedText>
         <AnimatedText delay={0.5}>
           <p
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "16px",
+              fontSize: "19px",
               color: COLORS.warmGray,
-              lineHeight: 1.7,
-              maxWidth: "520px",
-              margin: "0 auto 20px",
+              lineHeight: 1.6,
+              maxWidth: "560px",
+              margin: "0 auto 32px",
               fontWeight: 400,
             }}
           >
-            Professional on-site deep cleaning for busy Philadelphia cat
-            parents. Pet-safe enzyme treatment, no harsh chemicals, no hassle.
+            Enzyme-deep cleaning with wet-vac extraction — pet-safe and fast. So
+            you never scrub another globe.
           </p>
         </AnimatedText>
+
+        {/* Trust microbar */}
         <AnimatedText delay={0.6}>
           <div
             style={{
-              display: "inline-block",
+              display: "flex",
+              gap: "24px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              marginBottom: "36px",
               fontFamily: "'DM Sans', sans-serif",
               fontSize: "13px",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.12em",
-              color: COLORS.gold,
-              background: `${COLORS.gold}12`,
-              padding: "10px 24px",
-              borderRadius: "100px",
-              marginBottom: "36px",
+              fontWeight: 500,
+              color: COLORS.charcoal,
+              opacity: 0.75,
             }}
           >
-            ✦ Launching May 2026
+            <span>✓ Cancel anytime</span>
+            <span>✓ Pet-safe products</span>
+            <span>✓ No prep required</span>
           </div>
         </AnimatedText>
+
         <AnimatedText delay={0.7}>
           <div
             style={{
@@ -470,11 +698,7 @@ const Hero = () => {
             }}
           >
             <button
-              onClick={() =>
-                document
-                  .getElementById("pricing")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
+              onClick={onBookClick}
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: "14px",
@@ -499,7 +723,7 @@ const Hero = () => {
                 e.target.style.boxShadow = "none";
               }}
             >
-              View Pricing
+              Book Your First Clean
             </button>
             <button
               onClick={() =>
@@ -529,7 +753,7 @@ const Hero = () => {
                 e.target.style.transform = "translateY(0)";
               }}
             >
-              How It Works
+              See How It Works
             </button>
           </div>
         </AnimatedText>
@@ -559,64 +783,71 @@ const Hero = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
         @keyframes float{0%,100%{transform:translateX(-50%) translateY(0);opacity:.5}50%{transform:translateX(-50%) translateY(10px);opacity:1}}
-        @keyframes countPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
         *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:${COLORS.cream}}
         ::selection{background:${COLORS.sageLight};color:${COLORS.charcoal}}
-        @media(max-width:768px){
+        @media(max-width:900px){
           nav{padding:14px 16px !important}
           .nav-links{display:none !important}
-          .nav-cta{padding:10px 20px !important;font-size:12px !important}
+          .nav-phone{display:none !important}
+          .nav-cta{padding:10px 18px !important;font-size:11px !important}
+          .mobile-menu-btn{display:flex !important}
+          .mobile-menu{display:flex !important}
+        }
+        @media(max-width:768px){
           section{padding-left:20px !important;padding-right:20px !important}
           .about-grid{grid-template-columns:1fr !important;gap:40px !important}
           .pricing-grid{grid-template-columns:1fr !important}
           .stats-grid{grid-template-columns:1fr !important}
           .steps-grid{grid-template-columns:1fr !important}
+          .ba-grid{grid-template-columns:1fr !important}
           .footer-inner{flex-direction:column !important;text-align:center !important}
           .hero-subtitle{font-size:11px !important;flex-wrap:wrap !important}
           .hero-subtitle span:first-child,.hero-subtitle span:last-child{display:none !important}
+          .sticky-cta{display:flex !important}
         }
       `}</style>
     </section>
   );
 };
 
-const Stats = () => {
-  const [ref, vis] = useInView(0.2);
-  const [c1, s1] = useCountUp(4, 2000, true);
-  const [c2, s2] = useCountUp(100, 2000, true);
-  const [c3, s3] = useCountUp(60, 2000, true);
-  useEffect(() => {
-    if (vis) {
-      s1();
-      s2();
-      s3();
-    }
-  }, [vis, s1, s2, s3]);
-  const stats = [
+// ============ WHO IT'S FOR ============
+const WhoFor = () => {
+  const personas = [
     {
-      value: `${c1}-Step`,
-      label: "Deep clean process",
+      icon: "🤰",
+      title: "Pregnant cat parents",
+      desc: "Toxoplasmosis from cat waste is a real risk during pregnancy. Step away from the litter box — we'll handle it.",
+    },
+    {
+      icon: "👵",
+      title: "Older adults",
+      desc: "Disassembling, hauling, and scrubbing a Litter-Robot isn't easy on the back, knees, or wrists. Let us do the heavy lifting.",
+    },
+    {
+      icon: "💼",
+      title: "Busy professionals",
+      desc: "You bought a self-cleaning litter box to reclaim your weekends. Don't trade them back for a deep-cleaning chore.",
+    },
+    {
       icon: "🏠",
-      desc: "On-site professional service — we bring everything, you just point us to the Litter-Robot",
+      title: "Apartment dwellers",
+      desc: "No yard, no garage, no hose. Deep cleaning a Litter-Robot in a city apartment is a nightmare. We bring the gear.",
     },
     {
-      value: `${c2}%`,
-      label: "Pet-safe products",
-      icon: "🌿",
-      desc: "Enzyme cleaners, no harsh chemicals, no essential oils — safe for cats and humans",
+      icon: "🐈‍⬛",
+      title: "Multi-cat households",
+      desc: "More cats means faster buildup and more odor. Regular professional service keeps things sanitary for everyone.",
     },
     {
-      value: `${c3}min`,
-      label: "Average service time",
-      icon: "🐾",
-      desc: "We handle the disassembly, scrubbing, and reassembly so you can reclaim your weekend",
+      icon: "♿",
+      title: "Limited mobility",
+      desc: "If bending, lifting, or scrubbing is painful or unsafe, this is exactly the kind of task to outsource.",
     },
   ];
   return (
     <section
-      ref={ref}
       style={{
-        padding: "100px 40px",
+        padding: "120px 40px",
         background: COLORS.white,
         position: "relative",
         overflow: "hidden",
@@ -639,385 +870,25 @@ const Stats = () => {
               textAlign: "center",
             }}
           >
-            Why LitterLuxe
+            Who It's For
           </div>
         </AnimatedText>
         <AnimatedText delay={0.1}>
           <h2
             style={{
               fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "clamp(32px, 4vw, 48px)",
+              fontSize: "clamp(32px, 4vw, 52px)",
               fontWeight: 500,
               color: COLORS.charcoal,
               letterSpacing: "-0.02em",
-              marginBottom: "64px",
-              textAlign: "center",
-              lineHeight: 1.2,
-            }}
-          >
-            The details{" "}
-            <span style={{ fontStyle: "italic", color: COLORS.sage }}>
-              matter
-            </span>
-          </h2>
-        </AnimatedText>
-        <div
-          className="stats-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "32px",
-          }}
-        >
-          {stats.map((s, i) => (
-            <AnimatedText key={i} delay={0.15 * i}>
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "48px 32px",
-                  borderRadius: "24px",
-                  background: COLORS.cream,
-                  border: `1px solid ${COLORS.charcoal}06`,
-                  transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-6px)";
-                  e.currentTarget.style.boxShadow = `0 20px 60px ${COLORS.charcoal}06`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                <div style={{ fontSize: "36px", marginBottom: "16px" }}>
-                  {s.icon}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
-                    fontSize: "44px",
-                    fontWeight: 500,
-                    color: COLORS.charcoal,
-                    letterSpacing: "-0.02em",
-                    marginBottom: "8px",
-                    lineHeight: 1,
-                  }}
-                >
-                  {s.value}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.12em",
-                    color: COLORS.sage,
-                    marginBottom: "12px",
-                  }}
-                >
-                  {s.label}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "15px",
-                    color: COLORS.warmGray,
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {s.desc}
-                </div>
-              </div>
-            </AnimatedText>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// ═══════════════════════════════════════════════════════════════════
-// 🖼️ BEFORE / AFTER SECTION
-// To add your images:
-//   1. Drop files into your project's `public/` folder (e.g., `public/gasket-before.jpg`)
-//   2. The paths below reference them as `/gasket-before.jpg`
-// Recommended: shoot tight close-ups in natural light against a clean
-// neutral background. Empty the unit first — the "before" story is
-// grime and buildup, not waste. Same angle / same framing for before
-// and after pairs.
-// ═══════════════════════════════════════════════════════════════════
-const BeforeAfterSlider = ({ before, after, label }) => {
-  const [pos, setPos] = useState(50);
-  const containerRef = useRef(null);
-  const dragging = useRef(false);
-
-  const updatePos = useCallback((clientX) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = ((clientX - rect.left) / rect.width) * 100;
-    setPos(Math.max(0, Math.min(100, x)));
-  }, []);
-
-  useEffect(() => {
-    const handleMove = (e) => {
-      if (!dragging.current) return;
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      updatePos(clientX);
-    };
-    const handleUp = () => {
-      dragging.current = false;
-    };
-    window.addEventListener("mousemove", handleMove);
-    window.addEventListener("mouseup", handleUp);
-    window.addEventListener("touchmove", handleMove, { passive: true });
-    window.addEventListener("touchend", handleUp);
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      window.removeEventListener("mouseup", handleUp);
-      window.removeEventListener("touchmove", handleMove);
-      window.removeEventListener("touchend", handleUp);
-    };
-  }, [updatePos]);
-
-  const handleDown = (e) => {
-    dragging.current = true;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    updatePos(clientX);
-  };
-
-  return (
-    <div>
-      <div
-        ref={containerRef}
-        onMouseDown={handleDown}
-        onTouchStart={handleDown}
-        style={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: "1 / 1",
-          borderRadius: "20px",
-          overflow: "hidden",
-          cursor: "ew-resize",
-          userSelect: "none",
-          background: COLORS.offWhite,
-          boxShadow: `0 12px 48px ${COLORS.charcoal}10`,
-        }}
-      >
-        {/* After image (full, background) */}
-        <img
-          src={after}
-          alt={`${label} after cleaning`}
-          draggable={false}
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            pointerEvents: "none",
-          }}
-        />
-        {/* Before image (clipped to left side) */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: `${pos}%`,
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={before}
-            alt={`${label} before cleaning`}
-            draggable={false}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: `${containerRef.current?.offsetWidth || 400}px`,
-              height: "100%",
-              objectFit: "cover",
-              pointerEvents: "none",
-            }}
-          />
-        </div>
-
-        {/* Before / After labels */}
-        <div
-          style={{
-            position: "absolute",
-            top: "16px",
-            left: "16px",
-            padding: "6px 14px",
-            borderRadius: "100px",
-            background: `${COLORS.charcoal}cc`,
-            backdropFilter: "blur(8px)",
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "11px",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: "0.12em",
-            color: COLORS.cream,
-            opacity: pos > 10 ? 1 : 0,
-            transition: "opacity 0.3s",
-            pointerEvents: "none",
-          }}
-        >
-          Before
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            top: "16px",
-            right: "16px",
-            padding: "6px 14px",
-            borderRadius: "100px",
-            background: `${COLORS.sage}`,
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "11px",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: "0.12em",
-            color: COLORS.cream,
-            opacity: pos < 90 ? 1 : 0,
-            transition: "opacity 0.3s",
-            pointerEvents: "none",
-          }}
-        >
-          After
-        </div>
-
-        {/* Divider line + handle */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: `${pos}%`,
-            width: "2px",
-            background: COLORS.cream,
-            transform: "translateX(-50%)",
-            pointerEvents: "none",
-            boxShadow: `0 0 12px ${COLORS.charcoal}40`,
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: `${pos}%`,
-            width: "44px",
-            height: "44px",
-            borderRadius: "50%",
-            background: COLORS.cream,
-            transform: "translate(-50%, -50%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: `0 4px 20px ${COLORS.charcoal}30`,
-            pointerEvents: "none",
-            border: `2px solid ${COLORS.sage}`,
-          }}
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke={COLORS.sage}
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="15 18 9 12 15 6" />
-            <polyline
-              points="15 18 9 12 15 6"
-              transform="translate(24 0) scale(-1 1)"
-            />
-          </svg>
-        </div>
-      </div>
-      <div
-        style={{
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: "13px",
-          fontWeight: 600,
-          textTransform: "uppercase",
-          letterSpacing: "0.12em",
-          color: COLORS.sage,
-          marginTop: "20px",
-          textAlign: "center",
-        }}
-      >
-        {label}
-      </div>
-    </div>
-  );
-};
-
-const BeforeAfter = () => {
-  const pairs = [
-    {
-      label: "Gasket & Seal",
-      before: "/gasket-before.jpg",
-      after: "/gasket-after.jpg",
-    },
-    {
-      label: "Waste Drawer",
-      before: "/drawer-before.jpg",
-      after: "/drawer-after.jpg",
-    },
-    {
-      label: "Base & Sensors",
-      before: "/base-before.jpg",
-      after: "/base-after.jpg",
-    },
-  ];
-  return (
-    <section
-      style={{
-        padding: "120px 40px",
-        background: COLORS.offWhite,
-        position: "relative",
-      }}
-    >
-      <GrainOverlay opacity={0.2} />
-      <div
-        style={{ maxWidth: "1200px", margin: "0 auto", position: "relative" }}
-      >
-        <AnimatedText>
-          <div
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "12px",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.25em",
-              color: COLORS.sage,
-              marginBottom: "20px",
-              textAlign: "center",
-            }}
-          >
-            The Difference
-          </div>
-        </AnimatedText>
-        <AnimatedText delay={0.1}>
-          <h2
-            style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "clamp(36px, 5vw, 56px)",
-              fontWeight: 500,
-              color: COLORS.charcoal,
-              letterSpacing: "-0.02em",
-              marginBottom: "24px",
+              marginBottom: "16px",
               textAlign: "center",
               lineHeight: 1.15,
             }}
           >
-            See it for{" "}
+            You shouldn't have to{" "}
             <span style={{ fontStyle: "italic", color: COLORS.sage }}>
-              yourself
+              do this yourself
             </span>
           </h2>
         </AnimatedText>
@@ -1025,66 +896,121 @@ const BeforeAfter = () => {
           <p
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "16px",
+              fontSize: "17px",
               color: COLORS.warmGray,
-              lineHeight: 1.7,
-              maxWidth: "520px",
-              margin: "0 auto 64px",
               textAlign: "center",
+              maxWidth: "560px",
+              margin: "0 auto 64px",
+              lineHeight: 1.6,
             }}
           >
-            Drag the slider to reveal what a real LitterLuxe deep clean looks
-            like. No filters, no staging — just the work.
+            LitterLuxe was built for the people who need this most.
           </p>
         </AnimatedText>
         <div
-          className="stats-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "32px",
+            gap: "20px",
           }}
         >
-          {pairs.map((p, i) => (
-            <AnimatedText key={i} delay={0.12 * i}>
-              <BeforeAfterSlider
-                before={p.before}
-                after={p.after}
-                label={p.label}
-              />
+          {personas.map((p, i) => (
+            <AnimatedText key={i} delay={0.08 * i}>
+              <div
+                style={{
+                  padding: "32px 28px",
+                  borderRadius: "20px",
+                  background: COLORS.cream,
+                  border: `1px solid ${COLORS.charcoal}06`,
+                  transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+                  height: "100%",
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = `0 16px 48px ${COLORS.charcoal}08`;
+                  e.currentTarget.style.borderColor = `${COLORS.sage}30`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = `${COLORS.charcoal}06`;
+                }}
+              >
+                <div style={{ fontSize: "32px", marginBottom: "16px" }}>
+                  {p.icon}
+                </div>
+                <h3
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: "22px",
+                    fontWeight: 500,
+                    color: COLORS.charcoal,
+                    marginBottom: "10px",
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  {p.title}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "15px",
+                    color: COLORS.warmGray,
+                    lineHeight: 1.65,
+                  }}
+                >
+                  {p.desc}
+                </p>
+              </div>
             </AnimatedText>
           ))}
         </div>
+        <AnimatedText delay={0.6}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "15px",
+              color: COLORS.warmGray,
+              textAlign: "center",
+              marginTop: "48px",
+              fontStyle: "italic",
+            }}
+          >
+            …or honestly, anyone who'd rather not scrub another globe.
+          </p>
+        </AnimatedText>
       </div>
     </section>
   );
 };
 
+// ============ SERVICES (no globe swap) ============
 const Services = () => {
   const steps = [
     {
       num: "01",
       title: "We Arrive",
-      desc: "We come to your home with everything needed for a professional deep clean. No prep required on your end — just point us to the Litter-Robot.",
+      desc: "Fully equipped. No prep on your end.",
       icon: "🚗",
     },
     {
       num: "02",
-      title: "We Deep Clean",
-      desc: "We disassemble your Litter-Robot, apply enzyme cleaner to break down buildup, then scrub and wet vac the globe, drawer, base, sensors, and gaskets while the enzymes work.",
-      icon: "🧼",
+      title: "Disassemble & Treat",
+      desc: "Pet-safe enzyme cleaner breaks down buildup on every surface.",
+      icon: "🧪",
     },
     {
       num: "03",
-      title: "We Restore",
-      desc: "Your Litter-Robot is reassembled, tested, and finished with a pet-safe signature scent. Like it just came out of the box.",
-      icon: "✨",
+      title: "Scrub & Wet-Vac",
+      desc: "Commercial extraction pulls out every trace of dust and clumped litter.",
+      icon: "🧼",
     },
     {
       num: "04",
-      title: "You Relax",
-      desc: "Your Litter-Robot is back in action with a pet-safe finishing scent and full photo documentation of the work. One less chore, forever.",
-      icon: "☕",
+      title: "Reassemble & Restore",
+      desc: "Tested, finished with a signature scent, and good as new.",
+      icon: "✨",
     },
   ];
   return (
@@ -1120,7 +1046,7 @@ const Services = () => {
               fontWeight: 500,
               color: COLORS.charcoal,
               letterSpacing: "-0.02em",
-              marginBottom: "72px",
+              marginBottom: "16px",
               lineHeight: 1.15,
             }}
           >
@@ -1130,6 +1056,20 @@ const Services = () => {
               start to finish
             </span>
           </h2>
+        </AnimatedText>
+        <AnimatedText delay={0.2}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "17px",
+              color: COLORS.warmGray,
+              maxWidth: "600px",
+              marginBottom: "64px",
+              lineHeight: 1.6,
+            }}
+          >
+            Every visit. Same proven process. Done while you go about your day.
+          </p>
         </AnimatedText>
         <div
           className="steps-grid"
@@ -1145,8 +1085,8 @@ const Services = () => {
                 style={{
                   padding: "40px 32px",
                   borderRadius: "20px",
-                  background: i === 3 ? COLORS.charcoal : COLORS.white,
-                  border: i === 3 ? "none" : `1px solid ${COLORS.charcoal}06`,
+                  background: COLORS.white,
+                  border: `1px solid ${COLORS.charcoal}06`,
                   transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
                   cursor: "default",
                   position: "relative",
@@ -1169,7 +1109,7 @@ const Services = () => {
                     fontFamily: "'Playfair Display', Georgia, serif",
                     fontSize: "64px",
                     fontWeight: 400,
-                    color: i === 3 ? `${COLORS.sage}25` : `${COLORS.sage}12`,
+                    color: `${COLORS.sage}12`,
                     position: "absolute",
                     top: "12px",
                     right: "20px",
@@ -1178,25 +1118,6 @@ const Services = () => {
                 >
                   {step.num}
                 </div>
-                {i === 3 && (
-                  <div
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "10px",
-                      fontWeight: 600,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      color: COLORS.charcoal,
-                      background: COLORS.gold,
-                      padding: "4px 12px",
-                      borderRadius: "100px",
-                      alignSelf: "flex-start",
-                      marginBottom: "16px",
-                    }}
-                  >
-                    Monthly Exclusive
-                  </div>
-                )}
                 <div style={{ fontSize: "32px", marginBottom: "20px" }}>
                   {step.icon}
                 </div>
@@ -1218,7 +1139,7 @@ const Services = () => {
                     fontFamily: "'Playfair Display', Georgia, serif",
                     fontSize: "24px",
                     fontWeight: 500,
-                    color: i === 3 ? COLORS.cream : COLORS.charcoal,
+                    color: COLORS.charcoal,
                     marginBottom: "12px",
                   }}
                 >
@@ -1228,7 +1149,7 @@ const Services = () => {
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: "15px",
-                    color: i === 3 ? `${COLORS.cream}70` : COLORS.warmGray,
+                    color: COLORS.warmGray,
                     lineHeight: 1.7,
                   }}
                 >
@@ -1243,65 +1164,42 @@ const Services = () => {
   );
 };
 
-const SocialProof = () => {
-  const [ref] = useInView(0.2);
-  // ═══════════════════════════════════════════════════════════════════
-  // 🚨 PLACEHOLDER TESTIMONIALS — SWAP BEFORE LAUNCH
-  // Replace these with real quotes + first names + neighborhoods
-  // once you have your first clients. Offer your first 3 clients a
-  // discount in exchange for a testimonial + before/after photos.
-  // ═══════════════════════════════════════════════════════════════════
-  const testimonials = [
+// ============ WHY IT MATTERS (HEALTH) ============
+const WhyMatters = () => {
+  const reasons = [
     {
-      quote:
-        "I'd been putting off deep cleaning my Litter-Robot for almost a year. It looks brand new. My only regret is not booking sooner.",
-      name: "Sarah M.",
-      neighborhood: "Fishtown",
+      tag: "For your cat",
+      title: "Bacteria, parasites, and UTIs",
+      body: "Even self-cleaning boxes accumulate biofilm in sensors, gaskets, and the waste port. That buildup harbors bacteria linked to urinary tract infections, and parasites like giardia and toxoplasma that thrive in soiled environments.",
     },
     {
-      quote:
-        "Worth every penny. Pregnant and couldn't do it myself — they were on time, professional, and the unit came back smelling incredible.",
-      name: "Jessica T.",
-      neighborhood: "Graduate Hospital",
+      tag: "For your home",
+      title: "Ammonia and airborne odor",
+      body: "Trapped urine releases ammonia, which lingers long after a surface wipe. Deep extraction removes it at the source — your home actually smells clean instead of perfume-masked.",
     },
     {
-      quote:
-        "Three cats, one Litter-Robot, and a gasket situation I didn't want to talk about. They took it all apart without judgment.",
-      name: "Marcus R.",
-      neighborhood: "Northern Liberties",
+      tag: "For you",
+      title: "Toxoplasmosis and immune risk",
+      body: "Cat waste is the primary source of toxoplasma exposure — a real concern for pregnant women, immunocompromised people, and anyone with compromised health. Hands-off cleaning is hands-off risk.",
+    },
+    {
+      tag: "For your equipment",
+      title: "Sensor failures and shorter lifespan",
+      body: "Litter dust and crystallized urine wreck weight sensors and motors over time. Regular professional cleaning extends the life of a $700+ device — and prevents the dreaded mid-cycle error code.",
     },
   ];
   return (
     <section
-      ref={ref}
       style={{
-        padding: "100px 40px",
-        background: COLORS.charcoal,
+        padding: "120px 40px",
+        background: COLORS.cream,
         position: "relative",
         overflow: "hidden",
       }}
     >
+      <GrainOverlay opacity={0.2} />
       <div
-        style={{
-          position: "absolute",
-          width: "500px",
-          height: "500px",
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${COLORS.sage}12, transparent 70%)`,
-          top: "-30%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          pointerEvents: "none",
-        }}
-      />
-      <GrainOverlay opacity={0.15} />
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
+        style={{ maxWidth: "1100px", margin: "0 auto", position: "relative" }}
       >
         <AnimatedText>
           <div
@@ -1316,107 +1214,494 @@ const SocialProof = () => {
               textAlign: "center",
             }}
           >
-            What Clients Say
+            Why It Matters
           </div>
         </AnimatedText>
         <AnimatedText delay={0.1}>
           <h2
             style={{
               fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "clamp(32px, 4vw, 48px)",
+              fontSize: "clamp(32px, 4.5vw, 52px)",
               fontWeight: 500,
-              color: COLORS.cream,
+              color: COLORS.charcoal,
               letterSpacing: "-0.02em",
-              marginBottom: "64px",
+              marginBottom: "16px",
               textAlign: "center",
-              lineHeight: 1.2,
+              lineHeight: 1.15,
             }}
           >
-            Trusted by Philly{" "}
+            A clean Litter-Robot isn't a luxury.
+            <br />
             <span style={{ fontStyle: "italic", color: COLORS.sage }}>
-              cat parents
+              It's a health thing.
             </span>
           </h2>
         </AnimatedText>
+        <AnimatedText delay={0.2}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "17px",
+              color: COLORS.warmGray,
+              textAlign: "center",
+              maxWidth: "620px",
+              margin: "0 auto 64px",
+              lineHeight: 1.6,
+            }}
+          >
+            The "self-cleaning" part removes waste. It doesn't sanitize. Here's
+            what builds up when nobody deep cleans:
+          </p>
+        </AnimatedText>
         <div
-          className="stats-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "28px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "20px",
           }}
         >
-          {testimonials.map((t, i) => (
-            <AnimatedText key={i} delay={0.15 * i}>
+          {reasons.map((r, i) => (
+            <AnimatedText key={i} delay={0.1 * i}>
               <div
                 style={{
-                  padding: "40px 32px",
+                  padding: "36px 32px",
                   borderRadius: "20px",
-                  background: `${COLORS.cream}08`,
-                  border: `1px solid ${COLORS.cream}10`,
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
+                  background: COLORS.white,
+                  border: `1px solid ${COLORS.charcoal}06`,
                   transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+                  height: "100%",
+                  position: "relative",
+                  cursor: "default",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.background = `${COLORS.cream}12`;
+                  e.currentTarget.style.boxShadow = `0 16px 48px ${COLORS.charcoal}08`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.background = `${COLORS.cream}08`;
+                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
                 <div
                   style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
-                    fontSize: "48px",
+                    display: "inline-block",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.15em",
                     color: COLORS.sage,
-                    lineHeight: 1,
-                    marginBottom: "12px",
-                    fontStyle: "italic",
+                    background: `${COLORS.sage}12`,
+                    padding: "5px 12px",
+                    borderRadius: "100px",
+                    marginBottom: "20px",
                   }}
                 >
-                  "
+                  {r.tag}
                 </div>
+                <h3
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: "22px",
+                    fontWeight: 500,
+                    color: COLORS.charcoal,
+                    marginBottom: "12px",
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {r.title}
+                </h3>
                 <p
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: "15px",
-                    color: `${COLORS.cream}cc`,
+                    color: COLORS.warmGray,
                     lineHeight: 1.7,
-                    marginBottom: "28px",
-                    flex: 1,
                   }}
                 >
-                  {t.quote}
+                  {r.body}
                 </p>
-                <div>
-                  <div
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      color: COLORS.cream,
-                      marginBottom: "4px",
-                    }}
-                  >
-                    {t.name}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "12px",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.12em",
-                      color: COLORS.sage,
-                    }}
-                  >
-                    {t.neighborhood}
-                  </div>
-                </div>
               </div>
+            </AnimatedText>
+          ))}
+        </div>
+        <AnimatedText delay={0.6}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "14px",
+              color: COLORS.warmGray,
+              textAlign: "center",
+              marginTop: "40px",
+              fontStyle: "italic",
+              maxWidth: "560px",
+              margin: "40px auto 0",
+              lineHeight: 1.6,
+            }}
+          >
+            Most cat parents have never seen what's actually inside their unit
+            after six months. We have. It's the reason we exist.
+          </p>
+        </AnimatedText>
+      </div>
+    </section>
+  );
+};
+
+// ============ BEFORE / AFTER SLIDER ============
+const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
+  const [pos, setPos] = useState(startPos);
+  const [dragging, setDragging] = useState(false);
+  const containerRef = useRef(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  const updatePos = useCallback(
+    (clientX) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const next = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      setPos(next);
+      if (!hasInteracted) setHasInteracted(true);
+    },
+    [hasInteracted],
+  );
+
+  // Pointer handlers (work for mouse + touch + pen)
+  const onPointerDown = (e) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setDragging(true);
+    updatePos(e.clientX);
+  };
+  const onPointerMove = (e) => {
+    if (!dragging) return;
+    updatePos(e.clientX);
+  };
+  const onPointerUp = (e) => {
+    e.currentTarget.releasePointerCapture(e.pointerId);
+    setDragging(false);
+  };
+
+  // Click anywhere on the image to jump
+  const onContainerClick = (e) => {
+    if (e.target.dataset.handle) return; // don't double-fire on handle
+    updatePos(e.clientX);
+  };
+
+  return (
+    <div>
+      <div
+        ref={containerRef}
+        onClick={onContainerClick}
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "1 / 1",
+          borderRadius: "20px",
+          overflow: "hidden",
+          cursor: dragging ? "grabbing" : "ew-resize",
+          userSelect: "none",
+          background: COLORS.charcoal,
+          touchAction: "none",
+        }}
+      >
+        {/* AFTER image (full, underneath) */}
+        <img
+          src={after}
+          alt="After cleaning"
+          draggable={false}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* BEFORE image (clipped to left side) */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: `${pos}%`,
+            overflow: "hidden",
+            pointerEvents: "none",
+          }}
+        >
+          <img
+            src={before}
+            alt="Before cleaning"
+            draggable={false}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: `${100 / (pos / 100)}%`,
+              minWidth: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </div>
+
+        {/* Labels */}
+        <div
+          style={{
+            position: "absolute",
+            top: "16px",
+            left: "16px",
+            background: COLORS.charcoal,
+            color: COLORS.cream,
+            padding: "5px 14px",
+            borderRadius: "100px",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "10px",
+            fontWeight: 600,
+            textTransform: "uppercase",
+            letterSpacing: "0.15em",
+            pointerEvents: "none",
+            opacity: pos > 15 ? 1 : 0,
+            transition: "opacity 0.3s",
+          }}
+        >
+          Before
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: "16px",
+            right: "16px",
+            background: COLORS.sage,
+            color: COLORS.white,
+            padding: "5px 14px",
+            borderRadius: "100px",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "10px",
+            fontWeight: 600,
+            textTransform: "uppercase",
+            letterSpacing: "0.15em",
+            pointerEvents: "none",
+            opacity: pos < 85 ? 1 : 0,
+            transition: "opacity 0.3s",
+          }}
+        >
+          After
+        </div>
+
+        {/* Drag handle (vertical line + circle) */}
+        <div
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          data-handle="true"
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: `${pos}%`,
+            width: "44px",
+            transform: "translateX(-50%)",
+            cursor: dragging ? "grabbing" : "ew-resize",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            touchAction: "none",
+          }}
+        >
+          {/* Vertical divider line */}
+          <div
+            data-handle="true"
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: "50%",
+              width: "3px",
+              background: COLORS.white,
+              boxShadow: "0 0 12px rgba(0,0,0,0.4)",
+              transform: "translateX(-50%)",
+              pointerEvents: "none",
+            }}
+          />
+          {/* Round handle */}
+          <div
+            data-handle="true"
+            style={{
+              width: "44px",
+              height: "44px",
+              borderRadius: "50%",
+              background: COLORS.white,
+              boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "2px",
+              transition: dragging ? "none" : "transform 0.2s",
+              transform: dragging ? "scale(1.1)" : "scale(1)",
+              position: "relative",
+              zIndex: 2,
+              pointerEvents: "none",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "14px",
+                color: COLORS.charcoal,
+                fontWeight: 700,
+                lineHeight: 1,
+              }}
+            >
+              ‹
+            </span>
+            <span
+              style={{
+                fontSize: "14px",
+                color: COLORS.charcoal,
+                fontWeight: 700,
+                lineHeight: 1,
+              }}
+            >
+              ›
+            </span>
+          </div>
+        </div>
+
+        {/* "Drag to reveal" hint - fades on first interaction */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "16px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "rgba(42,42,40,0.75)",
+            color: COLORS.cream,
+            padding: "6px 14px",
+            borderRadius: "100px",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.05em",
+            opacity: hasInteracted ? 0 : 1,
+            transition: "opacity 0.5s",
+            pointerEvents: "none",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          ← Drag to reveal →
+        </div>
+      </div>
+
+      <p
+        style={{
+          marginTop: "16px",
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: "14px",
+          color: COLORS.warmGray,
+          fontStyle: "italic",
+          textAlign: "center",
+        }}
+      >
+        {caption}
+      </p>
+    </div>
+  );
+};
+
+const Results = () => {
+  const pairs = [
+    {
+      before: PLACEHOLDERS.globeBefore,
+      after: PLACEHOLDERS.globeAfter,
+      caption: "The globe — what you see every day",
+    },
+    {
+      before: PLACEHOLDERS.baseBefore,
+      after: PLACEHOLDERS.baseAfter,
+      caption: "The base — what's hiding underneath",
+    },
+  ];
+  return (
+    <section
+      id="results"
+      style={{
+        padding: "120px 40px",
+        background: COLORS.white,
+        position: "relative",
+      }}
+    >
+      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <AnimatedText>
+          <div
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "12px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.25em",
+              color: COLORS.sage,
+              marginBottom: "20px",
+              textAlign: "center",
+            }}
+          >
+            Real Results
+          </div>
+        </AnimatedText>
+        <AnimatedText delay={0.1}>
+          <h2
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: "clamp(36px, 5vw, 52px)",
+              fontWeight: 500,
+              color: COLORS.charcoal,
+              letterSpacing: "-0.02em",
+              marginBottom: "16px",
+              lineHeight: 1.15,
+              textAlign: "center",
+            }}
+          >
+            Drag to see the{" "}
+            <span style={{ fontStyle: "italic", color: COLORS.sage }}>
+              difference
+            </span>
+          </h2>
+        </AnimatedText>
+        <AnimatedText delay={0.2}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "17px",
+              color: COLORS.warmGray,
+              textAlign: "center",
+              maxWidth: "560px",
+              margin: "0 auto 64px",
+              lineHeight: 1.6,
+            }}
+          >
+            What a real LitterLuxe deep clean looks like — inside and out.
+          </p>
+        </AnimatedText>
+        <div
+          className="ba-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "40px",
+          }}
+        >
+          {pairs.map((p, i) => (
+            <AnimatedText key={i} delay={0.15 * i}>
+              <BeforeAfterSlider
+                before={p.before}
+                after={p.after}
+                caption={p.caption}
+                startPos={i === 0 ? 55 : 50}
+              />
             </AnimatedText>
           ))}
         </div>
@@ -1425,64 +1710,246 @@ const SocialProof = () => {
   );
 };
 
-const Pricing = () => {
+// ============ ZIP CHECK ============
+const ZipCheck = ({ onBookClick }) => {
+  const [zip, setZip] = useState("");
+  const [result, setResult] = useState(null);
+  const check = (e) => {
+    e.preventDefault();
+    const cleaned = zip.trim();
+    if (!/^\d{5}$/.test(cleaned)) {
+      setResult({ ok: false, msg: "Please enter a valid 5-digit zip code." });
+      return;
+    }
+    if (SERVICE_ZIPS.includes(cleaned)) {
+      setResult({
+        ok: true,
+        msg: `Yes — we serve ${cleaned}. Let's get you booked.`,
+      });
+    } else {
+      setResult({
+        ok: false,
+        msg: `We don't currently serve ${cleaned}, but reach out — we're expanding.`,
+      });
+    }
+  };
+  return (
+    <section
+      style={{
+        padding: "80px 40px",
+        background: COLORS.charcoal,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          width: "500px",
+          height: "500px",
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${COLORS.sage}15, transparent 70%)`,
+          top: "-30%",
+          left: "-10%",
+          pointerEvents: "none",
+        }}
+      />
+      <GrainOverlay opacity={0.15} />
+      <div
+        style={{
+          maxWidth: "640px",
+          margin: "0 auto",
+          textAlign: "center",
+          position: "relative",
+        }}
+      >
+        <AnimatedText>
+          <h2
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: "clamp(28px, 3.5vw, 38px)",
+              fontWeight: 500,
+              color: COLORS.cream,
+              letterSpacing: "-0.02em",
+              marginBottom: "16px",
+              lineHeight: 1.2,
+            }}
+          >
+            Before you book —{" "}
+            <span style={{ fontStyle: "italic", color: COLORS.sage }}>
+              do we serve you?
+            </span>
+          </h2>
+        </AnimatedText>
+        <AnimatedText delay={0.1}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "15px",
+              color: `${COLORS.cream}65`,
+              marginBottom: "32px",
+            }}
+          >
+            Philadelphia, the Main Line, Montgomery, Delaware, lower Bucks, and
+            eastern Chester counties.
+          </p>
+        </AnimatedText>
+        <AnimatedText delay={0.2}>
+          <form
+            onSubmit={check}
+            style={{
+              display: "flex",
+              gap: "12px",
+              maxWidth: "440px",
+              margin: "0 auto",
+              flexWrap: "wrap",
+            }}
+          >
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={5}
+              placeholder="Enter your zip"
+              value={zip}
+              onChange={(e) => setZip(e.target.value)}
+              style={{
+                flex: 1,
+                minWidth: "180px",
+                padding: "16px 20px",
+                borderRadius: "100px",
+                border: `1px solid ${COLORS.cream}25`,
+                background: `${COLORS.cream}08`,
+                color: COLORS.cream,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "15px",
+                outline: "none",
+                textAlign: "center",
+                letterSpacing: "0.1em",
+              }}
+            />
+            <button
+              type="submit"
+              style={{
+                padding: "16px 32px",
+                borderRadius: "100px",
+                border: "none",
+                background: COLORS.sage,
+                color: COLORS.white,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "14px",
+                fontWeight: 600,
+                cursor: "pointer",
+                letterSpacing: "0.05em",
+                transition: "background 0.3s",
+              }}
+              onMouseEnter={(e) =>
+                (e.target.style.background = COLORS.sageDark)
+              }
+              onMouseLeave={(e) => (e.target.style.background = COLORS.sage)}
+            >
+              Check Zip
+            </button>
+          </form>
+        </AnimatedText>
+        {result && (
+          <div
+            style={{
+              marginTop: "24px",
+              padding: "16px 24px",
+              borderRadius: "16px",
+              background: result.ok ? `${COLORS.sage}20` : `${COLORS.gold}15`,
+              color: result.ok ? COLORS.sageLight : COLORS.gold,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "15px",
+              fontWeight: 500,
+              display: "inline-block",
+            }}
+          >
+            {result.ok ? "✓ " : ""}
+            {result.msg}
+            {result.ok && (
+              <button
+                onClick={onBookClick}
+                style={{
+                  marginLeft: "12px",
+                  padding: "6px 16px",
+                  borderRadius: "100px",
+                  border: "none",
+                  background: COLORS.sage,
+                  color: COLORS.white,
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Book →
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+// ============ PRICING (no globe swap) ============
+const Pricing = ({ onBookClick }) => {
   const [hp, setHp] = useState(null);
   const plans = [
+    {
+      id: "reset",
+      name: "Reset Clean",
+      price: "150",
+      interval: "one-time",
+      desc: "Required first visit. Intensive on-site restoration to get your unit back to baseline.",
+      features: [
+        "Intensive globe & drawer cleaning",
+        "Extended enzyme soak & multiple passes",
+        "Wet-vac extraction",
+        "Deep base cleaning",
+        "New carbon filter included",
+        "Sensor & gasket detailing",
+        "Exterior wipe down & mat vacuuming",
+      ],
+      badge: "Start Here",
+      step: "Step 1",
+    },
     {
       id: "monthly",
       name: "Monthly",
       price: "100",
       interval: "/ visit",
-      desc: "Best value. On-site deep cleaning every month, priority scheduling, locked-in rate.",
+      desc: "Best value for households that want a consistently spotless unit. Cancel anytime.",
       features: [
-        "Full on-site deep clean",
-        "Deep base, sensor & gasket cleaning",
+        "Full on-site deep clean every month",
+        "Enzyme treatment with dwell time",
+        "Wet-vac extraction",
         "New carbon filter included",
-        "Exterior wipe down",
-        "Mat vacuuming",
+        "Exterior wipe down & mat vacuuming",
         "Freshness kit (waste liners + charcoal bag)",
         "Priority scheduling",
         "Locked-in rate guarantee",
       ],
       highlight: true,
       badge: "Best Value",
-      note: "First visit is a Reset Clean ($150)",
+      step: "Step 2 — Pick One",
     },
     {
       id: "quarterly",
       name: "Quarterly",
       price: "125",
       interval: "/ visit",
-      desc: "On-site deep clean every 3 months. Great maintenance rhythm.",
+      desc: "On-site deep clean every 3 months. A great maintenance rhythm for most cat parents.",
       features: [
-        "On-site globe & drawer deep clean",
+        "Full on-site deep clean every 3 months",
         "Enzyme treatment with dwell time",
-        "Wet vac extraction",
-        "Deep base cleaning",
+        "Wet-vac extraction",
         "New carbon filter included",
-        "Exterior wipe down",
-        "Mat vacuuming",
+        "Exterior wipe down & mat vacuuming",
+        "Cancel anytime",
       ],
-      highlight: false,
-    },
-    {
-      id: "reset",
-      name: "Reset Clean",
-      price: "150",
-      interval: "one-time",
-      desc: "Your first visit. Required for all new customers — intensive on-site restoration to start fresh.",
-      features: [
-        "Intensive on-site globe & drawer cleaning",
-        "Extended enzyme soak & multiple passes",
-        "Wet vac extraction",
-        "Intensive base deep clean",
-        "New carbon filter included",
-        "Sensor & gasket detailing",
-        "Exterior wipe down",
-        "Mat vacuuming",
-      ],
-      highlight: false,
-      badge: "First Visit",
+      step: "Step 2 — Pick One",
     },
   ];
   return (
@@ -1533,12 +2000,26 @@ const Pricing = () => {
               fontSize: "17px",
               color: COLORS.warmGray,
               textAlign: "center",
-              maxWidth: "500px",
-              margin: "0 auto 64px",
+              maxWidth: "560px",
+              margin: "0 auto 16px",
             }}
           >
-            No hidden fees. No long-term contracts. Just a sparkling clean
-            Litter-Robot.
+            Every new customer starts with a Reset Clean, then picks a
+            maintenance plan.
+          </p>
+        </AnimatedText>
+        <AnimatedText delay={0.3}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "14px",
+              color: COLORS.sage,
+              textAlign: "center",
+              marginBottom: "64px",
+              fontWeight: 500,
+            }}
+          >
+            Cancel anytime · Transparent flat-rate pricing · Pay as you go
           </p>
         </AnimatedText>
         <div
@@ -1597,6 +2078,24 @@ const Pricing = () => {
                     {plan.badge}
                   </div>
                 )}
+                {plan.step && (
+                  <div
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "10px",
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.18em",
+                      color: plan.highlight
+                        ? COLORS.sageLight
+                        : COLORS.warmGray,
+                      marginBottom: "12px",
+                      opacity: 0.8,
+                    }}
+                  >
+                    {plan.step}
+                  </div>
+                )}
                 <div
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
@@ -1648,27 +2147,11 @@ const Pricing = () => {
                       ? `${COLORS.cream}90`
                       : COLORS.warmGray,
                     lineHeight: 1.6,
-                    marginBottom: plan.note ? "12px" : "32px",
+                    marginBottom: "32px",
                   }}
                 >
                   {plan.desc}
                 </p>
-                {plan.note && (
-                  <div
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: COLORS.gold,
-                      marginBottom: "32px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                    }}
-                  >
-                    <span style={{ fontSize: "14px" }}>✦</span> {plan.note}
-                  </div>
-                )}
                 <div
                   style={{
                     borderTop: `1px solid ${plan.highlight ? `${COLORS.cream}12` : `${COLORS.charcoal}08`}`,
@@ -1717,11 +2200,7 @@ const Pricing = () => {
                   ))}
                 </div>
                 <button
-                  onClick={() =>
-                    document
-                      .getElementById("contact")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
+                  onClick={onBookClick}
                   style={{
                     marginTop: "32px",
                     width: "100%",
@@ -1756,7 +2235,7 @@ const Pricing = () => {
                     }
                   }}
                 >
-                  Get Started
+                  Book This Plan
                 </button>
               </div>
             </AnimatedText>
@@ -1799,6 +2278,7 @@ const Pricing = () => {
   );
 };
 
+// ============ ABOUT (with founder photo placeholder) ============
 const About = () => (
   <section
     id="about"
@@ -1807,7 +2287,7 @@ const About = () => (
     <div
       className="about-grid"
       style={{
-        maxWidth: "900px",
+        maxWidth: "1000px",
         margin: "0 auto",
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
@@ -1815,6 +2295,28 @@ const About = () => (
         alignItems: "center",
       }}
     >
+      <AnimatedText>
+        <div
+          style={{
+            borderRadius: "24px",
+            overflow: "hidden",
+            aspectRatio: "5 / 6",
+            background: COLORS.sageLight,
+            position: "relative",
+          }}
+        >
+          <img
+            src={PLACEHOLDERS.founderPhoto}
+            alt="LitterLuxe founder"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </div>
+      </AnimatedText>
       <div>
         <AnimatedText>
           <div
@@ -1857,129 +2359,94 @@ const About = () => (
               fontSize: "16px",
               color: COLORS.warmGray,
               lineHeight: 1.8,
-              marginBottom: "20px",
+              marginBottom: "24px",
             }}
           >
-            I own multiple Litter-Robots. I love the technology. But the deep
-            cleaning? Taking the whole thing apart, scrubbing dried litter out
-            of every corner, dealing with the waste port buildup — that's where
-            I drew the line.
+            I own multiple Litter-Robots. I love the technology — but the deep
+            cleaning was where I drew the line. LitterLuxe was born from that
+            frustration: a deeper clean than you can do at home, pet-safe and
+            effortless on your end.
           </p>
         </AnimatedText>
         <AnimatedText delay={0.3}>
-          <p
+          <div style={{ display: "none" }} />
+        </AnimatedText>
+        <AnimatedText delay={0.4}>
+          <div
             style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "16px",
-              color: COLORS.warmGray,
-              lineHeight: 1.8,
+              display: "flex",
+              gap: "24px",
+              flexWrap: "wrap",
+              paddingTop: "16px",
+              borderTop: `1px solid ${COLORS.charcoal}10`,
             }}
           >
-            LitterLuxe was born out of that exact frustration. We use
-            professional-grade enzyme cleaners, specialized wet/dry vacuums, and
-            a meticulous multi-step process so your Litter-Robot gets a true
-            studio-quality restoration — right in your home, every single
-            visit.
-          </p>
+            {[
+              { label: "Pet-safe products", icon: "🐾" },
+              { label: "Cancel anytime", icon: "✓" },
+              { label: "$5/clean to ACCT Philly", icon: "💚" },
+            ].map((b, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: COLORS.charcoal,
+                }}
+              >
+                <span style={{ fontSize: "16px" }}>{b.icon}</span> {b.label}
+              </div>
+            ))}
+          </div>
         </AnimatedText>
       </div>
-      <AnimatedText delay={0.2}>
-        <div
-          style={{
-            background: COLORS.white,
-            borderRadius: "24px",
-            padding: "48px 40px",
-            position: "relative",
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "120px",
-              color: `${COLORS.sage}15`,
-              position: "absolute",
-              top: "10px",
-              left: "24px",
-              lineHeight: 1,
-            }}
-          >
-            "
-          </div>
-          <p
-            style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "20px",
-              color: COLORS.charcoal,
-              lineHeight: 1.7,
-              fontStyle: "italic",
-              position: "relative",
-              zIndex: 1,
-            }}
-          >
-            Every product we use is pet-safe, every cloth is eco-friendly, and
-            every Litter-Robot leaves our hands looking and smelling like new.
-          </p>
-          <div
-            style={{
-              marginTop: "24px",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "13px",
-              fontWeight: 600,
-              color: COLORS.sage,
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-            }}
-          >
-            — LitterLuxe, Philadelphia
-          </div>
-        </div>
-      </AnimatedText>
     </div>
   </section>
 );
 
+// ============ FAQ (reordered) ============
 const FAQ = () => {
   const [oi, setOi] = useState(null);
   const faqs = [
     {
-      q: "Which Litter-Robot models do you service?",
-      a: "We currently service Litter-Robot 3 and Litter-Robot 4 models. More models and automatic litter boxes are coming soon — if you have a different model, reach out and request it. We're always expanding.",
-    },
-    {
-      q: "How does the first visit work?",
-      a: "Every new customer starts with a Reset Clean ($150). This is an intensive on-site deep clean that gets your unit back to baseline. After that, you can sign up for a Monthly ($100/visit) or Quarterly ($125/visit) plan to keep it that way.",
+      q: "What areas do you serve?",
+      a: "Philadelphia and surrounding suburbs — Main Line, Montgomery, Delaware, lower Bucks, and eastern Chester counties. Use the zip checker above to confirm.",
     },
     {
       q: "Do I need to be home during the cleaning?",
-      a: "We prefer that you're home, but it's not required as long as we have access to your home. If we arrive and can't get in, the visit will still be charged in full.",
+      a: "Preferred, but not required as long as we have access. If we arrive and can't get in, the visit is charged in full.",
+    },
+    {
+      q: "How do I know my home and cat are safe?",
+      a: "We treat your home like our own. All products are pet-safe with no harsh chemicals, and we work carefully and quietly to avoid stressing your cat. References available on request.",
+    },
+    {
+      q: "Do I need to do anything to prepare?",
+      a: "Nothing. We bring all the equipment, products, and supplies. Just point us to the Litter-Robot — we'll handle the rest.",
     },
     {
       q: "Are all your products safe for cats?",
-      a: "Absolutely. We use enzyme-based cleaners with no harsh chemicals, eco-friendly Swedish dishcloths, and our finishing scent is a pet-safe, non-toxic formula free from essential oils, phthalates, and parabens.",
+      a: "Yes. Enzyme-based cleaners, no harsh chemicals, no essential oils, parabens, or phthalates.",
     },
     {
-      q: "What if I haven't cleaned my Litter-Robot in over 6 months?",
-      a: "No judgment — that's exactly why we exist. Heavily soiled units are booked as a Reset Clean ($150). We've seen it all and we'll get it looking great.",
+      q: "Which Litter-Robot models do you service?",
+      a: "Litter-Robot 3 and 4. More models coming — reach out if you have a different one.",
     },
     {
-      q: "What areas do you serve?",
-      a: "We serve Philadelphia and the surrounding suburbs including the Main Line, Montgomery County, Delaware County, and parts of Bucks and Chester counties.",
+      q: "How does the first visit work?",
+      a: "Every new customer starts with a Reset Clean ($150). After that, choose Monthly ($100/visit) or Quarterly ($125/visit) to maintain it.",
     },
     {
       q: "I have multiple Litter-Robots. Do you offer a discount?",
-      a: "Yes! Each additional unit at the same address is $25 off — so $75/visit for Monthly, $100/visit for Quarterly, or $125 for an additional Reset Clean. Since we're already at your home, it's a no-brainer.",
-    },
-    {
-      q: "Are there any hidden fees or extra charges?",
-      a: "Never. Your price covers everything — all cleaning products, the new carbon filter, and the pet-safe finishing scent. One flat price, no surprises.",
+      a: "Yes — each additional unit at the same address is $25 off. We're already there, so it's a no-brainer.",
     },
     {
       q: "Can I cancel or pause my recurring service?",
-      a: "Yes, anytime. No contracts, no cancellation fees. We just ask for at least one week's notice before your next scheduled visit. Cancellations with less than one week's notice may be charged in full.",
-    },
-    {
-      q: "Can I upgrade from Quarterly to Monthly?",
-      a: "Absolutely! You can upgrade at any time — just let us know and we'll adjust your next visit.",
+      a: "Anytime. No cancellation fees. One week's notice before your next visit, please.",
     },
   ];
   return (
@@ -2102,14 +2569,476 @@ const FAQ = () => {
   );
 };
 
-const Contact = () => (
-  // ═══════════════════════════════════════════════════════════════════
-  // 📅 TO ADD REAL BOOKING (recommended before scaling past ~10 clients):
-  // Replace this form with a Calendly embed OR a tool like Cal.com /
-  // SavvyCal. Drop the embed iframe inside the <div> that currently
-  // wraps the <form>. Keep the form below as a fallback for people
-  // who don't want to pick a time.
-  // ═══════════════════════════════════════════════════════════════════
+// ============ BOOKING MODAL ============
+const BookingModal = ({ open, onClose }) => {
+  const [step, setStep] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    zip: "",
+    phone: "",
+    address: "",
+    model: "",
+    plan: "",
+  });
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const reset = () => {
+    setStep(1);
+    setSubmitted(false);
+    setData({
+      name: "",
+      email: "",
+      zip: "",
+      phone: "",
+      address: "",
+      model: "",
+      plan: "",
+    });
+  };
+
+  const handleClose = () => {
+    onClose();
+    setTimeout(reset, 400);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    const fd = new FormData();
+    Object.entries(data).forEach(([k, v]) => fd.append(k, v));
+    try {
+      const res = await fetch("https://formspree.io/f/xlgoojwn", {
+        method: "POST",
+        body: fd,
+        headers: { Accept: "application/json" },
+      });
+      if (res.ok) setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+    }
+    setSubmitting(false);
+  };
+
+  if (!open) return null;
+
+  const inputStyle = {
+    width: "100%",
+    padding: "16px 20px",
+    borderRadius: "12px",
+    border: `1px solid ${COLORS.charcoal}15`,
+    background: COLORS.cream,
+    color: COLORS.charcoal,
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: "15px",
+    outline: "none",
+    transition: "border-color 0.3s",
+  };
+
+  return (
+    <div
+      onClick={handleClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(42,42,40,0.7)",
+        backdropFilter: "blur(8px)",
+        zIndex: 2000,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+        animation: "fadeIn 0.3s ease-out",
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: COLORS.white,
+          borderRadius: "24px",
+          padding: "40px",
+          maxWidth: "500px",
+          width: "100%",
+          maxHeight: "90vh",
+          overflow: "auto",
+          position: "relative",
+          animation: "slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
+      >
+        <button
+          onClick={handleClose}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            background: "transparent",
+            border: "none",
+            fontSize: "24px",
+            color: COLORS.warmGray,
+            cursor: "pointer",
+            lineHeight: 1,
+          }}
+        >
+          ×
+        </button>
+
+        {submitted ? (
+          <div style={{ textAlign: "center", padding: "20px 0" }}>
+            <div
+              style={{
+                fontSize: "48px",
+                marginBottom: "16px",
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+                background: `${COLORS.sage}20`,
+                color: COLORS.sage,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 24px",
+              }}
+            >
+              ✓
+            </div>
+            <h3
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "28px",
+                fontWeight: 500,
+                color: COLORS.charcoal,
+                marginBottom: "12px",
+              }}
+            >
+              You're booked!
+            </h3>
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "15px",
+                color: COLORS.warmGray,
+                lineHeight: 1.6,
+                marginBottom: "24px",
+              }}
+            >
+              We'll reach out within 24 hours to confirm your visit and schedule
+              a time that works for you.
+            </p>
+            <button
+              onClick={handleClose}
+              style={{
+                padding: "14px 32px",
+                borderRadius: "100px",
+                border: "none",
+                background: COLORS.charcoal,
+                color: COLORS.cream,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "14px",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Done
+            </button>
+          </div>
+        ) : (
+          <>
+            <div
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "11px",
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.2em",
+                color: COLORS.sage,
+                marginBottom: "12px",
+              }}
+            >
+              Step {step} of 2
+            </div>
+            <h3
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "28px",
+                fontWeight: 500,
+                color: COLORS.charcoal,
+                marginBottom: "8px",
+                lineHeight: 1.2,
+              }}
+            >
+              {step === 1 ? "Let's get started" : "Almost done"}
+            </h3>
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "14px",
+                color: COLORS.warmGray,
+                marginBottom: "28px",
+              }}
+            >
+              {step === 1
+                ? "Just three quick fields — we'll handle the rest."
+                : "A few more details so we can prepare for your visit."}
+            </p>
+
+            {/* Progress bar */}
+            <div
+              style={{
+                height: "3px",
+                background: `${COLORS.charcoal}10`,
+                borderRadius: "100px",
+                marginBottom: "28px",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: step === 1 ? "50%" : "100%",
+                  background: COLORS.sage,
+                  borderRadius: "100px",
+                  transition: "width 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+              />
+            </div>
+
+            {step === 1 ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setStep(2);
+                }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
+                }}
+              >
+                <input
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="Your name"
+                  value={data.name}
+                  onChange={(e) => setData({ ...data, name: e.target.value })}
+                  style={inputStyle}
+                  onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = `${COLORS.charcoal}15`)
+                  }
+                />
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Email address"
+                  value={data.email}
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                  style={inputStyle}
+                  onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = `${COLORS.charcoal}15`)
+                  }
+                />
+                <input
+                  name="zip"
+                  type="text"
+                  required
+                  placeholder="Your zip code"
+                  inputMode="numeric"
+                  maxLength={5}
+                  value={data.zip}
+                  onChange={(e) => setData({ ...data, zip: e.target.value })}
+                  style={inputStyle}
+                  onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = `${COLORS.charcoal}15`)
+                  }
+                />
+                <button
+                  type="submit"
+                  style={{
+                    marginTop: "8px",
+                    padding: "16px",
+                    borderRadius: "100px",
+                    border: "none",
+                    background: COLORS.charcoal,
+                    color: COLORS.cream,
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    letterSpacing: "0.05em",
+                    cursor: "pointer",
+                    transition: "background 0.3s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.target.style.background = COLORS.sage)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.target.style.background = COLORS.charcoal)
+                  }
+                >
+                  Continue →
+                </button>
+              </form>
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
+                }}
+              >
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="Phone number (optional)"
+                  value={data.phone}
+                  onChange={(e) => setData({ ...data, phone: e.target.value })}
+                  style={inputStyle}
+                />
+                <input
+                  name="address"
+                  type="text"
+                  placeholder="Full address (optional)"
+                  value={data.address}
+                  onChange={(e) =>
+                    setData({ ...data, address: e.target.value })
+                  }
+                  style={inputStyle}
+                />
+                <select
+                  name="model"
+                  required
+                  value={data.model}
+                  onChange={(e) => setData({ ...data, model: e.target.value })}
+                  style={{
+                    ...inputStyle,
+                    WebkitAppearance: "menulist",
+                    appearance: "menulist",
+                  }}
+                >
+                  <option value="">Litter-Robot model</option>
+                  <option value="Litter-Robot 3">Litter-Robot 3</option>
+                  <option value="Litter-Robot 4">Litter-Robot 4</option>
+                  <option value="Other / Not sure">Other / Not sure</option>
+                </select>
+                <select
+                  name="plan"
+                  required
+                  value={data.plan}
+                  onChange={(e) => setData({ ...data, plan: e.target.value })}
+                  style={{
+                    ...inputStyle,
+                    WebkitAppearance: "menulist",
+                    appearance: "menulist",
+                  }}
+                >
+                  <option value="">Choose a plan</option>
+                  <option value="Reset Clean — $150">
+                    Reset Clean — $150 (first visit)
+                  </option>
+                  <option value="Monthly — $100/visit">
+                    Monthly — $100/visit
+                  </option>
+                  <option value="Quarterly — $125/visit">
+                    Quarterly — $125/visit
+                  </option>
+                  <option value="Not sure yet">
+                    Not sure yet — help me decide
+                  </option>
+                </select>
+                <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    style={{
+                      flex: "0 0 auto",
+                      padding: "16px 24px",
+                      borderRadius: "100px",
+                      border: `1.5px solid ${COLORS.charcoal}15`,
+                      background: "transparent",
+                      color: COLORS.charcoal,
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    ← Back
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    style={{
+                      flex: 1,
+                      padding: "16px",
+                      borderRadius: "100px",
+                      border: "none",
+                      background: submitting ? COLORS.warmGray : COLORS.sage,
+                      color: COLORS.white,
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      letterSpacing: "0.05em",
+                      cursor: submitting ? "wait" : "pointer",
+                      opacity: submitting ? 0.7 : 1,
+                      transition: "background 0.3s",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!submitting)
+                        e.target.style.background = COLORS.sageDark;
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!submitting) e.target.style.background = COLORS.sage;
+                    }}
+                  >
+                    {submitting ? "Booking..." : "Book My Clean"}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "12px",
+                color: COLORS.warmGray,
+                textAlign: "center",
+                marginTop: "20px",
+                lineHeight: 1.5,
+              }}
+            >
+              We'll respond within 24 hours to confirm. No spam, ever.
+            </p>
+          </>
+        )}
+
+        <style>{`
+          @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+          @keyframes slideUp { from { transform: translateY(40px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+        `}</style>
+      </div>
+    </div>
+  );
+};
+
+// ============ FINAL CTA ============
+const FinalCTA = ({ onBookClick }) => (
   <section
     id="contact"
     style={{
@@ -2134,7 +3063,7 @@ const Contact = () => (
     <GrainOverlay opacity={0.15} />
     <div
       style={{
-        maxWidth: "600px",
+        maxWidth: "640px",
         margin: "0 auto",
         textAlign: "center",
         position: "relative",
@@ -2159,7 +3088,7 @@ const Contact = () => (
         <h2
           style={{
             fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: "clamp(36px, 5vw, 52px)",
+            fontSize: "clamp(36px, 5vw, 56px)",
             fontWeight: 500,
             color: COLORS.cream,
             letterSpacing: "-0.02em",
@@ -2180,254 +3109,134 @@ const Contact = () => (
             fontSize: "17px",
             color: `${COLORS.cream}70`,
             lineHeight: 1.7,
-            marginBottom: "16px",
+            marginBottom: "40px",
           }}
         >
-          Book your first Reset Clean or set up a recurring plan. Serving
-          Philadelphia and the surrounding suburbs.
+          Book your Reset Clean now. We'll be in touch within 24 hours to
+          confirm a time.
         </p>
       </AnimatedText>
-      <AnimatedText delay={0.25}>
+      <AnimatedText delay={0.3}>
         <div
           style={{
-            display: "inline-block",
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "13px",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: "0.12em",
-            color: COLORS.gold,
-            background: `${COLORS.gold}12`,
-            padding: "10px 24px",
-            borderRadius: "100px",
-            marginBottom: "48px",
+            display: "flex",
+            gap: "12px",
+            justifyContent: "center",
+            flexWrap: "wrap",
           }}
         >
-          ✦ Launching May 2026 — Join the Waitlist
+          <button
+            onClick={onBookClick}
+            style={{
+              padding: "18px 44px",
+              borderRadius: "100px",
+              border: "none",
+              background: COLORS.sage,
+              color: COLORS.white,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "15px",
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+              cursor: "pointer",
+              transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = COLORS.sageDark;
+              e.target.style.transform = "translateY(-2px)";
+              e.target.style.boxShadow = `0 12px 40px ${COLORS.sage}40`;
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = COLORS.sage;
+              e.target.style.transform = "translateY(0)";
+              e.target.style.boxShadow = "none";
+            }}
+          >
+            Book Now
+          </button>
+          <a
+            href={`tel:${PLACEHOLDERS.phoneNumber.replace(/\D/g, "")}`}
+            style={{
+              padding: "18px 44px",
+              borderRadius: "100px",
+              border: `1.5px solid ${COLORS.cream}25`,
+              background: "transparent",
+              color: COLORS.cream,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "15px",
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              transition: "all 0.3s",
+            }}
+          >
+            📞 Call {PLACEHOLDERS.phoneNumber}
+          </a>
         </div>
-      </AnimatedText>
-      <AnimatedText delay={0.3}>
-        <WaitlistForm />
       </AnimatedText>
     </div>
   </section>
 );
 
-const WaitlistForm = () => {
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    const form = e.target;
-    const data = new FormData(form);
-    try {
-      const res = await fetch("https://formspree.io/f/xlgoojwn", {
-        method: "POST",
-        body: data,
-        headers: { Accept: "application/json" },
-      });
-      if (res.ok) {
-        setSubmitted(true);
-        form.reset();
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    setSubmitting(false);
-  };
-
-  if (submitted) {
-    return (
-      <div
-        style={{
-          textAlign: "center",
-          padding: "48px 32px",
-          borderRadius: "20px",
-          background: `${COLORS.sage}15`,
-          maxWidth: "400px",
-          margin: "0 auto",
-        }}
-      >
-        <div style={{ fontSize: "40px", marginBottom: "16px" }}>✓</div>
-        <div
-          style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: "24px",
-            fontWeight: 500,
-            color: COLORS.cream,
-            marginBottom: "12px",
-          }}
-        >
-          You're on the list!
-        </div>
-        <p
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "15px",
-            color: `${COLORS.cream}60`,
-            lineHeight: 1.6,
-          }}
-        >
-          We'll reach out before our May 2026 launch to schedule your first
-          clean.
-        </p>
-      </div>
-    );
-  }
-
-  const inputStyle = {
-    width: "100%",
-    padding: "18px 24px",
-    borderRadius: "14px",
-    border: `1px solid ${COLORS.cream}15`,
-    background: `${COLORS.cream}08`,
-    color: COLORS.cream,
-    fontFamily: "'DM Sans', sans-serif",
-    fontSize: "15px",
-    outline: "none",
-    transition: "border-color 0.3s",
-  };
-
-  return (
-    <div
+// ============ STICKY MOBILE CTA ============
+const StickyMobileCTA = ({ onBookClick }) => (
+  <div
+    className="sticky-cta"
+    style={{
+      display: "none",
+      position: "fixed",
+      bottom: "16px",
+      left: "16px",
+      right: "16px",
+      zIndex: 900,
+      padding: "12px",
+      borderRadius: "100px",
+      background: COLORS.charcoal,
+      boxShadow: "0 12px 40px rgba(0,0,0,0.25)",
+      gap: "8px",
+      backdropFilter: "blur(10px)",
+    }}
+  >
+    <button
+      onClick={onBookClick}
       style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "16px",
-        maxWidth: "400px",
-        margin: "0 auto",
+        flex: 1,
+        padding: "14px",
+        borderRadius: "100px",
+        border: "none",
+        background: COLORS.sage,
+        color: COLORS.white,
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: "14px",
+        fontWeight: 600,
+        cursor: "pointer",
       }}
     >
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-      >
-        <input
-          name="name"
-          type="text"
-          placeholder="Your name"
-          required
-          style={inputStyle}
-          onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
-          onBlur={(e) => (e.target.style.borderColor = `${COLORS.cream}15`)}
-        />
-        <input
-          name="email"
-          type="email"
-          placeholder="Email address"
-          required
-          style={inputStyle}
-          onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
-          onBlur={(e) => (e.target.style.borderColor = `${COLORS.cream}15`)}
-        />
-        <input
-          name="phone"
-          type="tel"
-          placeholder="Phone number"
-          style={inputStyle}
-          onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
-          onBlur={(e) => (e.target.style.borderColor = `${COLORS.cream}15`)}
-        />
-        <input
-          name="address"
-          type="text"
-          placeholder="Address (city & zip)"
-          style={inputStyle}
-          onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
-          onBlur={(e) => (e.target.style.borderColor = `${COLORS.cream}15`)}
-        />
-        <input
-          name="model"
-          type="text"
-          placeholder="Litter-Robot model (3, 4, or other)"
-          style={inputStyle}
-          onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
-          onBlur={(e) => (e.target.style.borderColor = `${COLORS.cream}15`)}
-        />
-        <select
-          name="plan"
-          style={{
-            width: "100%",
-            padding: "18px 24px",
-            borderRadius: "14px",
-            border: `1px solid ${COLORS.cream}15`,
-            background: COLORS.charcoal,
-            color: `${COLORS.cream}80`,
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "15px",
-            outline: "none",
-            WebkitAppearance: "menulist",
-            appearance: "menulist",
-          }}
-        >
-          <option
-            value=""
-            style={{ background: COLORS.charcoal, color: COLORS.cream }}
-          >
-            Select a plan
-          </option>
-          <option
-            value="Reset Clean — $150"
-            style={{ background: COLORS.charcoal, color: COLORS.cream }}
-          >
-            Reset Clean — $150 (one-time, on-site)
-          </option>
-          <option
-            value="Monthly — $100/visit (on-site)"
-            style={{ background: COLORS.charcoal, color: COLORS.cream }}
-          >
-            Monthly — $100/visit (on-site)
-          </option>
-          <option
-            value="Quarterly — $125/visit (on-site)"
-            style={{ background: COLORS.charcoal, color: COLORS.cream }}
-          >
-            Quarterly — $125/visit (on-site clean)
-          </option>
-        </select>
-        <button
-          type="submit"
-          disabled={submitting}
-          style={{
-            width: "100%",
-            padding: "18px",
-            borderRadius: "100px",
-            border: "none",
-            background: submitting ? COLORS.warmGray : COLORS.sage,
-            color: COLORS.white,
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "15px",
-            fontWeight: 600,
-            letterSpacing: "0.03em",
-            cursor: submitting ? "wait" : "pointer",
-            transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-            marginTop: "8px",
-            opacity: submitting ? 0.7 : 1,
-          }}
-          onMouseEnter={(e) => {
-            if (!submitting) {
-              e.target.style.background = COLORS.sageDark;
-              e.target.style.transform = "translateY(-2px)";
-              e.target.style.boxShadow = `0 12px 40px ${COLORS.sage}40`;
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!submitting) {
-              e.target.style.background = COLORS.sage;
-              e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "none";
-            }
-          }}
-        >
-          {submitting ? "Joining..." : "Join the Waitlist — Launching May 2026"}
-        </button>
-      </form>
-    </div>
-  );
-};
+      Book Now
+    </button>
+    <a
+      href={`tel:${PLACEHOLDERS.phoneNumber.replace(/\D/g, "")}`}
+      style={{
+        padding: "14px 20px",
+        borderRadius: "100px",
+        background: `${COLORS.cream}15`,
+        color: COLORS.cream,
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: "14px",
+        fontWeight: 600,
+        textDecoration: "none",
+        display: "inline-flex",
+        alignItems: "center",
+      }}
+    >
+      📞
+    </a>
+  </div>
+);
 
+// ============ FOOTER ============
 const Footer = () => (
   <footer
     style={{
@@ -2464,306 +3273,51 @@ const Footer = () => (
           gap: "24px",
           alignItems: "center",
           flexWrap: "wrap",
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: "13px",
+          color: `${COLORS.cream}45`,
         }}
       >
-        <div
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "13px",
-            color: `${COLORS.cream}35`,
-          }}
+        <a
+          href={`tel:${PLACEHOLDERS.phoneNumber.replace(/\D/g, "")}`}
+          style={{ color: `${COLORS.cream}60`, textDecoration: "none" }}
         >
-          © 2026 LitterLuxe · Philadelphia, PA & surrounding suburbs ·
-          hello@litterluxe.co
-        </div>
-        <span
-          onClick={() =>
-            document
-              .getElementById("terms")
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "12px",
-            color: `${COLORS.cream}30`,
-            cursor: "pointer",
-            textDecoration: "underline",
-            textUnderlineOffset: "3px",
-            transition: "color 0.3s",
-          }}
-          onMouseEnter={(e) => (e.target.style.color = `${COLORS.cream}60`)}
-          onMouseLeave={(e) => (e.target.style.color = `${COLORS.cream}30`)}
+          {PLACEHOLDERS.phoneNumber}
+        </a>
+        <a
+          href={`mailto:${PLACEHOLDERS.email}`}
+          style={{ color: `${COLORS.cream}60`, textDecoration: "none" }}
         >
-          Terms of Service
-        </span>
+          {PLACEHOLDERS.email}
+        </a>
+        <span>© 2026 LitterLuxe · Philadelphia, PA</span>
       </div>
     </div>
   </footer>
 );
 
-const Terms = () => {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <section
-      id="terms"
-      style={{
-        padding: "60px 40px",
-        background: COLORS.charcoal,
-        borderTop: `1px solid ${COLORS.cream}06`,
-      }}
-    >
-      <div style={{ maxWidth: "720px", margin: "0 auto" }}>
-        <div
-          onClick={() => setExpanded(!expanded)}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            cursor: "pointer",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "14px",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              color: `${COLORS.cream}40`,
-            }}
-          >
-            Terms of Service
-          </span>
-          <span
-            style={{
-              fontSize: "18px",
-              color: `${COLORS.cream}30`,
-              transition: "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-              transform: expanded ? "rotate(45deg)" : "rotate(0)",
-            }}
-          >
-            +
-          </span>
-        </div>
-        <div
-          style={{
-            maxHeight: expanded ? "3000px" : "0",
-            overflow: "hidden",
-            transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
-            opacity: expanded ? 1 : 0,
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "14px",
-              color: `${COLORS.cream}45`,
-              lineHeight: 1.9,
-              paddingTop: "32px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "20px",
-            }}
-          >
-            <p>
-              <strong style={{ color: `${COLORS.cream}60` }}>
-                Service Scope
-              </strong>
-              <br />
-              LitterLuxe provides professional cleaning services for
-              Litter-Robot automatic litter boxes. Our service includes on-site
-              deep cleaning using enzyme treatments and wet/dry extraction, base
-              cleaning, exterior wipe down, mat vacuuming, and a pet-safe
-              finishing scent. Service is limited to cleaning — we are not
-              responsible for diagnosing or repairing mechanical or electrical
-              issues with your unit.
-            </p>
-
-            <p>
-              <strong style={{ color: `${COLORS.cream}60` }}>
-                Service Tiers
-              </strong>
-              <br />
-              <em style={{ color: `${COLORS.cream}50` }}>
-                Reset Clean ($150, required first visit):
-              </em>{" "}
-              Intensive on-site deep cleaning required for all new customers.
-              Includes extended enzyme soak, multiple cleaning passes, and full
-              base restoration.
-              <br />
-              <br />
-              <em style={{ color: `${COLORS.cream}50` }}>
-                Monthly Plan ($100/visit):
-              </em>{" "}
-              Full on-site deep cleaning every month, including globe, drawer,
-              base, sensors, and gaskets. Cancel anytime with one week's notice.
-              <br />
-              <br />
-              <em style={{ color: `${COLORS.cream}50` }}>
-                Quarterly Plan ($125/visit):
-              </em>{" "}
-              On-site deep cleaning of your globe, drawer, and base using enzyme
-              treatments and wet/dry extraction. Cancel anytime with one week's
-              notice.
-            </p>
-
-            <p>
-              <strong style={{ color: `${COLORS.cream}60` }}>
-                Scheduling & Access
-              </strong>
-              <br />
-              We prefer that you are home during service, but it is not required
-              as long as we have access to your home and the Litter-Robot. If we
-              arrive at the scheduled time and are unable to access the unit,
-              the visit will be charged in full.
-            </p>
-
-            <p>
-              <strong style={{ color: `${COLORS.cream}60` }}>
-                Cancellation Policy
-              </strong>
-              <br />
-              All recurring plans (Monthly and Quarterly) may be canceled
-              anytime with at least one week's notice before your next scheduled
-              visit. Cancellations with less than one week's notice may be
-              charged in full. There are no cancellation fees.
-            </p>
-
-            <p>
-              <strong style={{ color: `${COLORS.cream}60` }}>
-                Pricing & Payment
-              </strong>
-              <br />
-              All prices are flat-rate with no hidden fees. Your quoted price
-              covers the complete service including all cleaning products, a
-              new carbon filter, and the pet-safe finishing scent. Payment is
-              due at the time of service.
-            </p>
-
-            <p>
-              <strong style={{ color: `${COLORS.cream}60` }}>
-                Products & Pet Safety
-              </strong>
-              <br />
-              All cleaning products used by LitterLuxe are pet-safe, non-toxic,
-              and free from harsh chemicals. Our finishing scent contains no
-              essential oils, phthalates, parabens, or formaldehyde. While we
-              take every precaution to use safe products, LitterLuxe is not
-              liable for individual pet sensitivities or allergic reactions.
-            </p>
-
-            <p>
-              <strong style={{ color: `${COLORS.cream}60` }}>Liability</strong>
-              <br />
-              LitterLuxe is not responsible for pre-existing damage, mechanical
-              issues, or normal wear and tear to your Litter-Robot. Our service
-              is performed with care, but by booking you acknowledge that minor
-              cosmetic wear may be present on your unit prior to service.
-            </p>
-
-            <p
-              style={{
-                color: `${COLORS.cream}30`,
-                fontSize: "12px",
-                marginTop: "12px",
-              }}
-            >
-              Last updated: April 2026 · By booking a service with LitterLuxe,
-              you agree to these terms.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const StickyMobileCTA = () => {
-  const isMobile = useIsMobile();
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    const handleScroll = () => {
-      // Show after scrolling past the hero (roughly 500px) and hide at the very bottom (footer area)
-      const scrolled = window.scrollY;
-      const atBottom =
-        window.innerHeight + scrolled >= document.body.offsetHeight - 400;
-      setShow(scrolled > 500 && !atBottom);
-    };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-  if (!isMobile) return null;
-  return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: show ? 0 : -100,
-        left: 0,
-        right: 0,
-        padding: "12px 16px calc(12px + env(safe-area-inset-bottom))",
-        background: "rgba(250,248,245,0.95)",
-        backdropFilter: "blur(20px)",
-        borderTop: `1px solid ${COLORS.charcoal}12`,
-        zIndex: 999,
-        transition: "bottom 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-        boxShadow: show ? `0 -8px 32px ${COLORS.charcoal}10` : "none",
-      }}
-    >
-      <button
-        onClick={() =>
-          document
-            .getElementById("contact")
-            ?.scrollIntoView({ behavior: "smooth" })
-        }
-        style={{
-          width: "100%",
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: "15px",
-          fontWeight: 600,
-          letterSpacing: "0.05em",
-          color: COLORS.cream,
-          background: COLORS.charcoal,
-          border: "none",
-          padding: "16px",
-          borderRadius: "100px",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "8px",
-        }}
-      >
-        Book Your Cleaning
-        <span style={{ fontSize: "16px" }}>→</span>
-      </button>
-    </div>
-  );
-};
-
+// ============ MAIN ============
 export default function LitterLuxe() {
-  const isMobile = useIsMobile();
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const openBooking = () => setBookingOpen(true);
+  const closeBooking = () => setBookingOpen(false);
+
   return (
-    <div
-      style={{
-        background: COLORS.cream,
-        minHeight: "100vh",
-        paddingBottom: isMobile ? "80px" : "0",
-      }}
-    >
-      <Nav />
-      <Hero />
-      <Stats />
-      {/* <BeforeAfter /> — hidden until matching before/after photos are ready */}
+    <div style={{ background: COLORS.cream, minHeight: "100vh" }}>
+      <Nav onBookClick={openBooking} />
+      <Hero onBookClick={openBooking} />
+      <WhyMatters />
+      <Results />
       <Services />
-      <SocialProof />
-      <Pricing />
+      <WhoFor />
       <About />
+      <Pricing onBookClick={openBooking} />
+      <ZipCheck onBookClick={openBooking} />
       <FAQ />
-      <Contact />
+      <FinalCTA onBookClick={openBooking} />
       <Footer />
-      <Terms />
-      <StickyMobileCTA />
+      <BookingModal open={bookingOpen} onClose={closeBooking} />
+      <StickyMobileCTA onBookClick={openBooking} />
     </div>
   );
 }
