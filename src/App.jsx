@@ -22,7 +22,8 @@ const PLACEHOLDERS = {
   processPhoto: "https://placehold.co/800x600/C5D4BC/2A2A28?text=Process+Photo",
   phoneNumber: "(856) 437-0045",
   email: "hello@litterluxe.co",
-  instagram: "@litterluxe",
+  instagram: "litterluxe.co",
+  instagramUrl: "https://www.instagram.com/litterluxe.co/",
   reviewCount: 0, // will pull in real Google review count later
 };
 
@@ -3453,7 +3454,7 @@ const Footer = () => (
       <div
         style={{
           display: "flex",
-          gap: "24px",
+          gap: "20px",
           alignItems: "center",
           flexWrap: "wrap",
           fontFamily: "'DM Sans', sans-serif",
@@ -3472,6 +3473,41 @@ const Footer = () => (
           style={{ color: `${COLORS.cream}60`, textDecoration: "none" }}
         >
           {PLACEHOLDERS.email}
+        </a>
+        <a
+          href={PLACEHOLDERS.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Follow LitterLuxe on Instagram"
+          style={{
+            color: `${COLORS.cream}60`,
+            textDecoration: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            transition: "color 0.3s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = COLORS.sage)}
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.color = `${COLORS.cream}60`)
+          }
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          @{PLACEHOLDERS.instagram}
         </a>
         <span>© 2026 LitterLuxe · Philadelphia, PA</span>
       </div>
