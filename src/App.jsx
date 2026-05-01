@@ -792,6 +792,7 @@ const Hero = ({ onBookClick }) => {
           .nav-cta{padding:10px 18px !important;font-size:11px !important}
           .mobile-menu-btn{display:flex !important}
           .mobile-menu{display:flex !important}
+          .why-grid{grid-template-columns:repeat(2, 1fr) !important}
         }
         @media(max-width:768px){
           section{padding-left:20px !important;padding-right:20px !important}
@@ -804,6 +805,9 @@ const Hero = ({ onBookClick }) => {
           .hero-subtitle{font-size:11px !important;flex-wrap:wrap !important}
           .hero-subtitle span:first-child,.hero-subtitle span:last-child{display:none !important}
           .sticky-cta{display:flex !important}
+        }
+        @media(max-width:520px){
+          .why-grid{grid-template-columns:1fr !important}
         }
       `}</style>
     </section>
@@ -1169,23 +1173,27 @@ const WhyMatters = () => {
   const reasons = [
     {
       tag: "For your cat",
-      title: "Bacteria, parasites, and UTIs",
-      body: "Even self-cleaning boxes accumulate biofilm in sensors, gaskets, and the waste port. That buildup harbors bacteria linked to urinary tract infections, and parasites like giardia and toxoplasma that thrive in soiled environments.",
+      icon: "🐾",
+      title: "Bacteria & UTIs",
+      body: "Biofilm in sensors, gaskets, and waste ports harbors bacteria linked to urinary tract infections.",
     },
     {
       tag: "For your home",
-      title: "Ammonia and airborne odor",
-      body: "Trapped urine releases ammonia, which lingers long after a surface wipe. Deep extraction removes it at the source — your home actually smells clean instead of perfume-masked.",
+      icon: "🏠",
+      title: "Ammonia & odor",
+      body: "Trapped urine releases ammonia. Deep extraction removes it at the source — no perfume-masking.",
     },
     {
       tag: "For you",
-      title: "Toxoplasmosis and immune risk",
-      body: "Cat waste is the primary source of toxoplasma exposure — a real concern for pregnant women, immunocompromised people, and anyone with compromised health. Hands-off cleaning is hands-off risk.",
+      icon: "💪",
+      title: "Toxoplasmosis risk",
+      body: "Cat waste is the primary toxoplasma source. A real concern during pregnancy or compromised health.",
     },
     {
       tag: "For your equipment",
-      title: "Sensor failures and shorter lifespan",
-      body: "Litter dust and crystallized urine wreck weight sensors and motors over time. Regular professional cleaning extends the life of a $700+ device — and prevents the dreaded mid-cycle error code.",
+      icon: "⚙️",
+      title: "Sensors & lifespan",
+      body: "Litter dust wrecks weight sensors over time. Regular cleaning extends the life of your $700+ unit.",
     },
   ];
   return (
@@ -1254,17 +1262,18 @@ const WhyMatters = () => {
           </p>
         </AnimatedText>
         <div
+          className="why-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "20px",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "16px",
           }}
         >
           {reasons.map((r, i) => (
             <AnimatedText key={i} delay={0.1 * i}>
               <div
                 style={{
-                  padding: "36px 32px",
+                  padding: "32px 24px",
                   borderRadius: "20px",
                   background: COLORS.white,
                   border: `1px solid ${COLORS.charcoal}06`,
@@ -1284,17 +1293,28 @@ const WhyMatters = () => {
               >
                 <div
                   style={{
-                    display: "inline-block",
+                    width: "48px",
+                    height: "48px",
+                    borderRadius: "14px",
+                    background: `${COLORS.sage}15`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "24px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  {r.icon}
+                </div>
+                <div
+                  style={{
                     fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "11px",
+                    fontSize: "10px",
                     fontWeight: 600,
                     textTransform: "uppercase",
                     letterSpacing: "0.15em",
                     color: COLORS.sage,
-                    background: `${COLORS.sage}12`,
-                    padding: "5px 12px",
-                    borderRadius: "100px",
-                    marginBottom: "20px",
+                    marginBottom: "10px",
                   }}
                 >
                   {r.tag}
@@ -1302,12 +1322,12 @@ const WhyMatters = () => {
                 <h3
                   style={{
                     fontFamily: "'Playfair Display', Georgia, serif",
-                    fontSize: "22px",
+                    fontSize: "20px",
                     fontWeight: 500,
                     color: COLORS.charcoal,
                     marginBottom: "12px",
                     letterSpacing: "-0.01em",
-                    lineHeight: 1.3,
+                    lineHeight: 1.25,
                   }}
                 >
                   {r.title}
@@ -1315,9 +1335,9 @@ const WhyMatters = () => {
                 <p
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "15px",
+                    fontSize: "14px",
                     color: COLORS.warmGray,
-                    lineHeight: 1.7,
+                    lineHeight: 1.6,
                   }}
                 >
                   {r.body}
@@ -1916,11 +1936,29 @@ const Pricing = ({ onBookClick }) => {
       step: "Step 1",
     },
     {
+      id: "quarterly",
+      name: "Quarterly",
+      price: "125",
+      interval: "/ visit",
+      desc: "Deep clean every 3 months. The right rhythm for most cat parents.",
+      features: [
+        "Full on-site deep clean every 3 months",
+        "Enzyme treatment with dwell time",
+        "Wet-vac extraction",
+        "New carbon filter included",
+        "Exterior wipe down & mat vacuuming",
+        "Cancel anytime",
+      ],
+      highlight: true,
+      badge: "Most Popular",
+      step: "Step 2 — Pick One",
+    },
+    {
       id: "monthly",
       name: "Monthly",
       price: "100",
       interval: "/ visit",
-      desc: "Best value for households that want a consistently spotless unit. Cancel anytime.",
+      desc: "For multi-cat households or anyone who wants their unit consistently spotless.",
       features: [
         "Full on-site deep clean every month",
         "Enzyme treatment with dwell time",
@@ -1930,24 +1968,6 @@ const Pricing = ({ onBookClick }) => {
         "Freshness kit (waste liners + charcoal bag)",
         "Priority scheduling",
         "Locked-in rate guarantee",
-      ],
-      highlight: true,
-      badge: "Best Value",
-      step: "Step 2 — Pick One",
-    },
-    {
-      id: "quarterly",
-      name: "Quarterly",
-      price: "125",
-      interval: "/ visit",
-      desc: "On-site deep clean every 3 months. A great maintenance rhythm for most cat parents.",
-      features: [
-        "Full on-site deep clean every 3 months",
-        "Enzyme treatment with dwell time",
-        "Wet-vac extraction",
-        "New carbon filter included",
-        "Exterior wipe down & mat vacuuming",
-        "Cancel anytime",
       ],
       step: "Step 2 — Pick One",
     },
@@ -2952,11 +2972,11 @@ const BookingModal = ({ open, onClose }) => {
                   <option value="Reset Clean — $150">
                     Reset Clean — $150 (first visit)
                   </option>
+                  <option value="Quarterly — $125/visit">
+                    Quarterly — $125/visit (most popular)
+                  </option>
                   <option value="Monthly — $100/visit">
                     Monthly — $100/visit
-                  </option>
-                  <option value="Quarterly — $125/visit">
-                    Quarterly — $125/visit
                   </option>
                   <option value="Not sure yet">
                     Not sure yet — help me decide
