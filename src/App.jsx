@@ -20,7 +20,7 @@ const PLACEHOLDERS = {
   baseBefore: "/images/base-before.jpg",
   baseAfter: "/images/base-after.jpg",
   processPhoto: "https://placehold.co/800x600/C5D4BC/2A2A28?text=Process+Photo",
-  phoneNumber: "(215) 555-0100",
+  phoneNumber: "(856) 437-0045",
   email: "hello@litterluxe.co",
   instagram: "@litterluxe",
   reviewCount: 0, // will pull in real Google review count later
