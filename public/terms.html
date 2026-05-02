@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service Agreement — LitterLuxe</title>
+    <meta
+      name="description"
+      content="LitterLuxe Service Agreement & Liability Waiver — terms governing every service appointment."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cream: #faf8f5;
+        --sage: #8b9e7e;
+        --sage-dark: #6b7e5e;
+        --sage-light: #c5d4bc;
+        --charcoal: #2a2a28;
+        --warm-gray: #9c9890;
+        --gold: #c4a265;
+        --white: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--cream);
+        color: var(--charcoal);
+        font-family: "DM Sans", sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::selection {
+        background: var(--sage-light);
+        color: var(--charcoal);
+      }
+
+      /* Top nav */
+      nav {
+        padding: 24px 40px;
+        background: rgba(250, 248, 245, 0.92);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(42, 42, 40, 0.06);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .logo {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--charcoal);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+      }
+
+      .logo span {
+        color: var(--sage);
+      }
+
+      .back-link {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--charcoal);
+        text-decoration: none;
+        opacity: 0.7;
+        transition: opacity 0.3s;
+      }
+
+      .back-link:hover {
+        opacity: 1;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 80px 40px 48px;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .eyebrow {
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: var(--sage);
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: clamp(36px, 5vw, 56px);
+        font-weight: 500;
+        color: var(--charcoal);
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        margin-bottom: 16px;
+      }
+
+      h1 em {
+        font-style: italic;
+        color: var(--sage);
+      }
+
+      .last-updated {
+        font-size: 14px;
+        color: var(--warm-gray);
+        font-style: italic;
+      }
+
+      /* Content */
+      .content {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 24px 40px 80px;
+      }
+
+      .intro {
+        background: var(--white);
+        padding: 32px;
+        border-radius: 20px;
+        border: 1px solid rgba(42, 42, 40, 0.06);
+        margin-bottom: 48px;
+      }
+
+      .intro p {
+        font-size: 16px;
+        color: var(--warm-gray);
+        line-height: 1.7;
+      }
+
+      .intro p + p {
+        margin-top: 12px;
+      }
+
+      h2 {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 28px;
+        font-weight: 500;
+        color: var(--charcoal);
+        letter-spacing: -0.01em;
+        margin: 48px 0 16px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(42, 42, 40, 0.08);
+      }
+
+      h2:first-of-type {
+        border-top: none;
+        padding-top: 0;
+        margin-top: 0;
+      }
+
+      .section-number {
+        display: inline-block;
+        font-family: "DM Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--sage);
+        margin-bottom: 8px;
+      }
+
+      p {
+        font-size: 15px;
+        color: var(--charcoal);
+        line-height: 1.75;
+        margin-bottom: 14px;
+      }
+
+      ul,
+      ol {
+        margin: 12px 0 14px 0;
+        padding-left: 24px;
+      }
+
+      li {
+        font-size: 15px;
+        color: var(--charcoal);
+        line-height: 1.75;
+        margin-bottom: 8px;
+      }
+
+      li::marker {
+        color: var(--sage);
+      }
+
+      strong {
+        font-weight: 600;
+        color: var(--charcoal);
+      }
+
+      /* Important callout */
+      .callout {
+        background: rgba(139, 158, 126, 0.08);
+        border-left: 3px solid var(--sage);
+        padding: 20px 24px;
+        border-radius: 4px 12px 12px 4px;
+        margin: 20px 0;
+      }
+
+      .callout p {
+        font-size: 14px;
+        color: var(--charcoal);
+        margin: 0;
+      }
+
+      /* Contact section */
+      .contact-block {
+        background: var(--charcoal);
+        color: var(--cream);
+        padding: 40px 32px;
+        border-radius: 20px;
+        margin-top: 48px;
+        text-align: center;
+      }
+
+      .contact-block h3 {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        letter-spacing: -0.01em;
+      }
+
+      .contact-block p {
+        font-size: 14px;
+        color: rgba(250, 248, 245, 0.7);
+        margin-bottom: 8px;
+      }
+
+      .contact-block a {
+        color: var(--sage-light);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .contact-block a:hover {
+        color: var(--sage);
+      }
+
+      /* Footnote */
+      .legal-footnote {
+        font-size: 13px;
+        color: var(--warm-gray);
+        font-style: italic;
+        text-align: center;
+        margin-top: 32px;
+        padding: 0 20px;
+        line-height: 1.6;
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px;
+        background: var(--charcoal);
+        text-align: center;
+      }
+
+      footer .logo {
+        color: var(--cream);
+        display: inline-block;
+        margin-bottom: 12px;
+      }
+
+      footer p {
+        color: rgba(250, 248, 245, 0.5);
+        font-size: 13px;
+        margin: 0;
+      }
+
+      /* Mobile */
+      @media (max-width: 640px) {
+        nav {
+          padding: 16px 20px;
+        }
+        .hero {
+          padding: 56px 20px 32px;
+        }
+        .content {
+          padding: 24px 20px 60px;
+        }
+        .intro {
+          padding: 24px 20px;
+        }
+        h2 {
+          font-size: 22px;
+        }
+        .contact-block {
+          padding: 32px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="logo">Litter<span>Luxe</span></a>
+      <a href="/" class="back-link">← Back to Home</a>
+    </nav>
+
+    <section class="hero">
+      <div class="eyebrow">Legal</div>
+      <h1>Service Agreement <em>&amp; Terms</em></h1>
+      <p class="last-updated">Last updated: May 2, 2026</p>
+    </section>
+
+    <main class="content">
+      <div class="intro">
+        <p>
+          This Service Agreement (the "Agreement") applies to all cleaning
+          services provided by LitterLuxe ("we," "us," or "Service Provider") to
+          our customers ("you" or "Customer"). By booking a service through our
+          website, you acknowledge that you have read and agree to these terms.
+        </p>
+        <p>
+          A printed or digital copy of this Agreement is signed before each
+          service appointment begins. We do this to ensure transparency for both
+          parties — you know exactly what to expect, and we know exactly what
+          we've agreed to.
+        </p>
+      </div>
+
+      <span class="section-number">Section 1</span>
+      <h2>Services Provided</h2>
+      <p>
+        LitterLuxe performs on-site cleaning, disassembly, sanitization, and
+        reassembly of the Customer's Litter-Robot unit at the Customer's home.
+        Services may include:
+      </p>
+      <ul>
+        <li>Removal of existing litter and waste</li>
+        <li>Enzyme treatment of all surfaces (globe, base, drawer, sensors)</li>
+        <li>Wet-vac extraction of dust, debris, and rinse water</li>
+        <li>Hospital-grade disinfection of unit components</li>
+        <li>Replacement of the carbon filter (included)</li>
+        <li>Exterior wipe-down and vacuuming of the surrounding mat area</li>
+        <li>Reassembly and a test cycle to confirm function</li>
+      </ul>
+      <p>
+        Specific services depend on the plan you selected (Reset Clean,
+        Quarterly, or Monthly).
+      </p>
+
+      <span class="section-number">Section 2</span>
+      <h2>Acknowledgment of Service Nature</h2>
+      <p>The Customer acknowledges that:</p>
+      <ul>
+        <li>
+          Cleaning the Litter-Robot involves disassembly of mechanical and
+          electronic components, use of liquid cleaning agents, and operation of
+          cleaning equipment within the home.
+        </li>
+        <li>
+          Despite reasonable care, normal cleaning activity may produce sounds,
+          brief odors from cleaning agents, or temporary moisture during the
+          service.
+        </li>
+        <li>
+          The Litter-Robot is an electronic appliance with components subject to
+          normal wear. Pre-existing conditions, manufacturer defects, or
+          component failure unrelated to the cleaning may become apparent during
+          or after service.
+        </li>
+      </ul>
+
+      <span class="section-number">Section 3</span>
+      <h2>Pre-Service Documentation</h2>
+      <p>
+        Before any cleaning begins, the Service Provider will photograph the
+        Litter-Robot and the immediate surrounding area to document existing
+        condition. The Customer agrees that any damage, wear, staining, or
+        component issues visible in these photos is pre-existing and not the
+        result of our cleaning service.
+      </p>
+      <div class="callout">
+        <p>
+          <strong>Why this matters:</strong> Pre-service photos protect both
+          parties. They prevent disputes about damage that existed before we
+          arrived, and they give you peace of mind that we're not responsible
+          for issues we didn't cause.
+        </p>
+      </div>
+
+      <span class="section-number">Section 4</span>
+      <h2>Limitation of Liability</h2>
+      <p>The Service Provider's liability is limited as follows:</p>
+      <ol>
+        <li>
+          The Service Provider is not responsible for pre-existing damage, wear,
+          or component failure of the Litter-Robot.
+        </li>
+        <li>
+          The Service Provider is not responsible for malfunctions of the
+          Litter-Robot occurring after service that result from normal wear,
+          manufacturer defects, or use unrelated to the cleaning.
+        </li>
+        <li>
+          For damage caused directly by the Service Provider during the cleaning
+          process, liability is limited to the cost of repair or replacement of
+          the specific item damaged, up to a maximum of $500 per service
+          appointment.
+        </li>
+        <li>
+          The Service Provider is not liable for indirect, consequential, or
+          incidental damages.
+        </li>
+      </ol>
+
+      <span class="section-number">Section 5</span>
+      <h2>Pet Responsibility</h2>
+      <p>
+        The Customer is responsible for managing pets during the service
+        appointment. The Customer agrees to:
+      </p>
+      <ul>
+        <li>
+          Secure or supervise all pets in a separate area during the service.
+        </li>
+        <li>
+          Inform the Service Provider of any pet behavioral issues (aggression,
+          anxiety, escape risk) before service begins.
+        </li>
+        <li>
+          Hold the Service Provider harmless for pet-related incidents (escape,
+          injury, behavioral reaction) when the Customer has not adequately
+          secured the pet.
+        </li>
+      </ul>
+
+      <span class="section-number">Section 6</span>
+      <h2>Access &amp; Authorization</h2>
+      <p>
+        The Customer authorizes the Service Provider to enter the service
+        address at the agreed appointment time, access the Litter-Robot
+        location, and handle the unit and surrounding area as necessary to
+        perform the service.
+      </p>
+      <p>
+        If the Customer is not present, the Customer must provide reasonable
+        means of access (door code, key with a neighbor, etc.). Verbal
+        authorization for entry must be confirmed in writing (text or email)
+        prior to the appointment.
+      </p>
+
+      <span class="section-number">Section 7</span>
+      <h2>Payment Terms</h2>
+      <ul>
+        <li>
+          Payment is due upon completion of service unless other arrangements
+          have been made in advance.
+        </li>
+        <li>
+          We accept major credit cards, debit cards, Venmo, Cash App, and Zelle.
+        </li>
+        <li>
+          For recurring service plans, payment is processed after each completed
+          visit unless prepaid.
+        </li>
+      </ul>
+
+      <span class="section-number">Section 8</span>
+      <h2>Cancellation &amp; No-Show Policy</h2>
+      <ul>
+        <li>
+          <strong>Free cancellation:</strong> Cancellations made more than 24
+          hours before the scheduled appointment are free of charge.
+        </li>
+        <li>
+          <strong>Late cancellation:</strong> Cancellations made within 24 hours
+          of the appointment may be charged a $25 cancellation fee.
+        </li>
+        <li>
+          <strong>No-show / no-access:</strong> If the Service Provider arrives
+          at the scheduled time and is unable to access the property after a
+          reasonable wait, the full service fee will be charged.
+        </li>
+        <li>
+          <strong>Recurring service:</strong> You may pause or cancel a
+          recurring plan at any time with one week's notice before your next
+          scheduled visit. No cancellation fees apply to recurring plan
+          cancellations.
+        </li>
+      </ul>
+
+      <span class="section-number">Section 9</span>
+      <h2>Products &amp; Materials</h2>
+      <p>
+        All products used by LitterLuxe are pet-safe and free of harsh
+        chemicals, essential oils, parabens, and phthalates. Equipment is
+        sanitized between every appointment using vet-grade disinfectant to
+        prevent cross-contamination between homes.
+      </p>
+      <p>
+        If you have specific product sensitivities or preferences, please inform
+        us at booking so we can accommodate them where possible.
+      </p>
+
+      <span class="section-number">Section 10</span>
+      <h2>Modifications &amp; Entire Agreement</h2>
+      <p>
+        This document represents the entire agreement between the Customer and
+        the Service Provider. Any modifications to these terms must be agreed to
+        in writing by both parties.
+      </p>
+      <p>
+        LitterLuxe reserves the right to update these terms over time. Changes
+        will be reflected on this page with a new "Last Updated" date. Customers
+        will be notified of material changes via email or text.
+      </p>
+
+      <span class="section-number">Section 11</span>
+      <h2>Governing Law</h2>
+      <p>
+        This Agreement is governed by the laws of the Commonwealth of
+        Pennsylvania. Any disputes arising from this Agreement will be resolved
+        in the courts of Philadelphia County, Pennsylvania.
+      </p>
+
+      <div class="contact-block">
+        <h3>Questions about these terms?</h3>
+        <p>We're happy to walk through any of this with you before booking.</p>
+        <p>
+          Email <a href="mailto:hello@litterluxe.co">hello@litterluxe.co</a
+          ><br />
+          Call <a href="tel:8564370045">(856) 437-0045</a>
+        </p>
+      </div>
+
+      <p class="legal-footnote">
+        Specific limitations of liability described in this Agreement may not be
+        enforceable in all circumstances under Pennsylvania law. Where any
+        provision is found unenforceable, the remainder of this Agreement shall
+        remain in full effect.
+      </p>
+    </main>
+
+    <footer>
+      <a href="/" class="logo"
+        >Litter<span style="color: var(--sage)">Luxe</span></a
+      >
+      <p>© 2026 LitterLuxe · Philadelphia, PA</p>
+    </footer>
+  </body>
+</html>

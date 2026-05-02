@@ -24,7 +24,6 @@ const PLACEHOLDERS = {
   email: "hello@litterluxe.co",
   instagram: "litterluxe.co",
   instagramUrl: "https://www.instagram.com/litterluxe.co/",
-  reviewCount: 0, // will pull in real Google review count later
 };
 
 const SERVICE_ZIPS = [
@@ -141,7 +140,6 @@ const SERVICE_ZIPS = [
   "19355",
   "19380",
   "19382",
-  "19355",
 ];
 
 // ============ HOOKS ============
@@ -160,24 +158,6 @@ const useInView = (threshold = 0.15) => {
   }, [threshold]);
   return [ref, isVisible];
 };
-
-// const useCountUp = (end, duration = 2000, startOnView = false) => {
-//   const [count, setCount] = useState(0);
-//   const [started, setStarted] = useState(!startOnView);
-//   const start = useCallback(() => setStarted(true), []);
-//   useEffect(() => {
-//     if (!started) return;
-//     let startTime = null;
-//     const step = (ts) => {
-//       if (!startTime) startTime = ts;
-//       const p = Math.min((ts - startTime) / duration, 1);
-//       setCount(Math.floor(p * end));
-//       if (p < 1) requestAnimationFrame(step);
-//     };
-//     requestAnimationFrame(step);
-//   }, [started, end, duration]);
-//   return [count, start];
-// };
 
 const AnimatedText = ({ children, delay = 0, className = "" }) => {
   const [ref, isVisible] = useInView(0.1);
@@ -624,7 +604,7 @@ const Hero = ({ onBookClick }) => {
             <span
               style={{ width: "40px", height: "1px", background: COLORS.sage }}
             />
-            A cleaner throne for your majesty
+            Philadelphia's first Litter-Robot deep clean service
             <span
               style={{ width: "40px", height: "1px", background: COLORS.sage }}
             />
@@ -683,9 +663,9 @@ const Hero = ({ onBookClick }) => {
               opacity: 0.75,
             }}
           >
-            <span>✓ Cancel anytime</span>
             <span>✓ Pet-safe products</span>
             <span>✓ No prep required</span>
+            <span>✓ Cancel anytime</span>
           </div>
         </AnimatedText>
 
@@ -821,7 +801,7 @@ const WhoFor = () => {
     {
       icon: "🤰",
       title: "Pregnant cat parents",
-      desc: "Toxoplasmosis from cat waste is a real risk during pregnancy. Step away from the litter box — we'll handle it.",
+      desc: "Your OB already told you to skip the litter box. We're the easy answer to that conversation.",
     },
     {
       icon: "👵",
@@ -990,31 +970,31 @@ const WhoFor = () => {
   );
 };
 
-// ============ SERVICES (no globe swap) ============
+// ============ SERVICES (with disinfection differentiator) ============
 const Services = () => {
   const steps = [
     {
       num: "01",
       title: "We Arrive",
-      desc: "Fully equipped. No prep on your end.",
+      desc: "Fully equipped with sanitized gear. No prep on your end.",
       icon: "🚗",
     },
     {
       num: "02",
       title: "Disassemble & Treat",
-      desc: "Pet-safe enzyme cleaner breaks down buildup on every surface.",
+      desc: "Pet-safe enzyme cleaner breaks down buildup on every surface — globe, base, drawer, sensors.",
       icon: "🧪",
     },
     {
       num: "03",
       title: "Scrub & Wet-Vac",
-      desc: "Commercial extraction pulls out every trace of dust and clumped litter.",
+      desc: "Commercial extraction pulls out every trace of dust and clumped litter — even the spots you can't reach.",
       icon: "🧼",
     },
     {
       num: "04",
-      title: "Reassemble & Restore",
-      desc: "Tested, finished with a signature scent, and good as new.",
+      title: "Disinfect & Restore",
+      desc: "Hospital-grade disinfection, fresh carbon filter, reassembled and tested. Good as new.",
       icon: "✨",
     },
   ];
@@ -1082,6 +1062,7 @@ const Services = () => {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
             gap: "24px",
+            marginBottom: "48px",
           }}
         >
           {steps.map((step, i) => (
@@ -1164,6 +1145,76 @@ const Services = () => {
             </AnimatedText>
           ))}
         </div>
+
+        {/* DIFFERENTIATOR CALLOUT */}
+        <AnimatedText delay={0.5}>
+          <div
+            style={{
+              padding: "32px 40px",
+              borderRadius: "20px",
+              background: COLORS.white,
+              border: `1px solid ${COLORS.sage}30`,
+              display: "flex",
+              alignItems: "center",
+              gap: "24px",
+              flexWrap: "wrap",
+            }}
+          >
+            <div
+              style={{
+                width: "56px",
+                height: "56px",
+                borderRadius: "16px",
+                background: `${COLORS.sage}15`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "28px",
+                flexShrink: 0,
+              }}
+            >
+              🛡️
+            </div>
+            <div style={{ flex: 1, minWidth: "260px" }}>
+              <div
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.18em",
+                  color: COLORS.sage,
+                  marginBottom: "6px",
+                }}
+              >
+                What sets us apart
+              </div>
+              <h3
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: "22px",
+                  fontWeight: 500,
+                  color: COLORS.charcoal,
+                  marginBottom: "8px",
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                Hospital-grade disinfection between every appointment
+              </h3>
+              <p
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "15px",
+                  color: COLORS.warmGray,
+                  lineHeight: 1.6,
+                }}
+              >
+                Vet-grade disinfectant on every tool, between every home — so
+                nothing from another customer's cat ever reaches yours.
+              </p>
+            </div>
+          </div>
+        </AnimatedText>
       </div>
     </section>
   );
@@ -1175,26 +1226,26 @@ const WhyMatters = () => {
     {
       tag: "For your cat",
       icon: "🐾",
-      title: "Bacteria & UTIs",
-      body: "Biofilm in sensors, gaskets, and waste ports harbors bacteria linked to urinary tract infections.",
+      title: "A healthier box",
+      body: "Biofilm buildup in sensors and gaskets can harbor bacteria. Regular deep cleaning keeps the environment your cat uses every day actually clean.",
     },
     {
       tag: "For your home",
       icon: "🏠",
-      title: "Ammonia & odor",
-      body: "Trapped urine releases ammonia. Deep extraction removes it at the source — no perfume-masking.",
+      title: "Genuine freshness",
+      body: "Trapped urine releases ammonia. We extract it at the source — no perfumes, no masking, just a unit that actually smells clean.",
     },
     {
       tag: "For you",
       icon: "💪",
-      title: "Toxoplasmosis risk",
-      body: "Cat waste is the primary toxoplasma source. A real concern during pregnancy or compromised health.",
+      title: "Peace of mind",
+      body: "Cat waste is the primary source of toxoplasma. Stepping away from this chore matters most during pregnancy or if you're immunocompromised.",
     },
     {
       tag: "For your equipment",
       icon: "⚙️",
-      title: "Sensors & lifespan",
-      body: "Litter dust wrecks weight sensors over time. Regular cleaning extends the life of your $700+ unit.",
+      title: "A longer-lasting unit",
+      body: "Litter dust gradually wears down weight sensors and motors. Regular cleaning extends the life of your $700+ investment.",
     },
   ];
   return (
@@ -1239,10 +1290,10 @@ const WhyMatters = () => {
               lineHeight: 1.15,
             }}
           >
-            A clean Litter-Robot isn't a luxury.
+            Better for your cat,
             <br />
             <span style={{ fontStyle: "italic", color: COLORS.sage }}>
-              It's a health thing.
+              better for your home.
             </span>
           </h2>
         </AnimatedText>
@@ -1259,7 +1310,7 @@ const WhyMatters = () => {
             }}
           >
             The "self-cleaning" part removes waste. It doesn't sanitize. Here's
-            what builds up when nobody deep cleans:
+            what a real deep clean does for everyone:
           </p>
         </AnimatedText>
         <div
@@ -1389,7 +1440,6 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
     [hasInteracted],
   );
 
-  // Pointer handlers (work for mouse + touch + pen)
   const onPointerDown = (e) => {
     e.currentTarget.setPointerCapture(e.pointerId);
     setDragging(true);
@@ -1404,9 +1454,8 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
     setDragging(false);
   };
 
-  // Click anywhere on the image to jump
   const onContainerClick = (e) => {
-    if (e.target.dataset.handle) return; // don't double-fire on handle
+    if (e.target.dataset.handle) return;
     updatePos(e.clientX);
   };
 
@@ -1427,7 +1476,6 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
           touchAction: "none",
         }}
       >
-        {/* AFTER image (full, underneath) */}
         <img
           src={after}
           alt="After cleaning"
@@ -1442,8 +1490,6 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
             pointerEvents: "none",
           }}
         />
-
-        {/* BEFORE image (clipped to left side) */}
         <div
           style={{
             position: "absolute",
@@ -1470,7 +1516,6 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
           />
         </div>
 
-        {/* Labels */}
         <div
           style={{
             position: "absolute",
@@ -1514,7 +1559,6 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
           After
         </div>
 
-        {/* Drag handle (vertical line + circle) */}
         <div
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
@@ -1535,7 +1579,6 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
             touchAction: "none",
           }}
         >
-          {/* Vertical divider line */}
           <div
             data-handle="true"
             style={{
@@ -1550,7 +1593,6 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
               pointerEvents: "none",
             }}
           />
-          {/* Round handle */}
           <div
             data-handle="true"
             style={{
@@ -1593,7 +1635,6 @@ const BeforeAfterSlider = ({ before, after, caption, startPos = 50 }) => {
           </div>
         </div>
 
-        {/* "Drag to reveal" hint - fades on first interaction */}
         <div
           style={{
             position: "absolute",
@@ -1750,7 +1791,8 @@ const ZipCheck = ({ onBookClick }) => {
     } else {
       setResult({
         ok: false,
-        msg: `We don't currently serve ${cleaned}, but reach out — we're expanding.`,
+        outOfArea: true,
+        msg: `${cleaned} is outside our usual service area, but reach out — we may still be able to make it work.`,
       });
     }
   };
@@ -1796,9 +1838,9 @@ const ZipCheck = ({ onBookClick }) => {
               lineHeight: 1.2,
             }}
           >
-            Before you book —{" "}
+            First — do we{" "}
             <span style={{ fontStyle: "italic", color: COLORS.sage }}>
-              do we serve you?
+              serve your area?
             </span>
           </h2>
         </AnimatedText>
@@ -1884,6 +1926,7 @@ const ZipCheck = ({ onBookClick }) => {
               fontSize: "15px",
               fontWeight: 500,
               display: "inline-block",
+              maxWidth: "560px",
             }}
           >
             {result.ok ? "✓ " : ""}
@@ -1907,6 +1950,54 @@ const ZipCheck = ({ onBookClick }) => {
                 Book →
               </button>
             )}
+            {result.outOfArea && (
+              <div
+                style={{
+                  marginTop: "12px",
+                  display: "flex",
+                  gap: "8px",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <a
+                  href={`mailto:${PLACEHOLDERS.email}?subject=Service request outside coverage area&body=Hi, my zip code is ${zip} which is outside your standard area. I'd love to discuss whether you can still service my Litter-Robot.`}
+                  style={{
+                    padding: "8px 18px",
+                    borderRadius: "100px",
+                    border: "none",
+                    background: COLORS.sage,
+                    color: COLORS.white,
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    display: "inline-block",
+                  }}
+                >
+                  Email Us
+                </a>
+                <a
+                  href={`tel:${PLACEHOLDERS.phoneNumber.replace(/\D/g, "")}`}
+                  style={{
+                    padding: "8px 18px",
+                    borderRadius: "100px",
+                    border: `1px solid ${COLORS.gold}50`,
+                    background: "transparent",
+                    color: COLORS.gold,
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    display: "inline-block",
+                  }}
+                >
+                  📞 Call {PLACEHOLDERS.phoneNumber}
+                </a>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -1914,7 +2005,7 @@ const ZipCheck = ({ onBookClick }) => {
   );
 };
 
-// ============ PRICING (no globe swap) ============
+// ============ PRICING ============
 const Pricing = ({ onBookClick }) => {
   const [hp, setHp] = useState(null);
   const plans = [
@@ -1923,7 +2014,7 @@ const Pricing = ({ onBookClick }) => {
       name: "Reset Clean",
       price: "150",
       interval: "one-time",
-      desc: "Required first visit. Intensive on-site restoration to get your unit back to baseline.",
+      desc: "Every new customer starts here. Intensive on-site restoration to get your unit back to baseline.",
       features: [
         "Intensive globe & drawer cleaning",
         "Extended enzyme soak & multiple passes",
@@ -1948,7 +2039,6 @@ const Pricing = ({ onBookClick }) => {
         "Wet-vac extraction",
         "New carbon filter included",
         "Exterior wipe down & mat vacuuming",
-        "Cancel anytime",
       ],
       highlight: true,
       badge: "Most Popular",
@@ -2040,7 +2130,7 @@ const Pricing = ({ onBookClick }) => {
               fontWeight: 500,
             }}
           >
-            Cancel anytime · Transparent flat-rate pricing · Pay as you go
+            Cancel anytime · Flat-rate pricing · Pay as you go
           </p>
         </AnimatedText>
         <div
@@ -2278,28 +2368,12 @@ const Pricing = ({ onBookClick }) => {
             Each additional Litter-Robot at the same address is $25 off.
           </p>
         </AnimatedText>
-        <AnimatedText delay={0.6}>
-          <p
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "14px",
-              color: COLORS.warmGray,
-              textAlign: "center",
-              marginTop: "12px",
-            }}
-          >
-            <span style={{ color: COLORS.gold, fontWeight: 600 }}>
-              ✦ $5 from every service
-            </span>{" "}
-            is donated to ACCT Philly to support local rescue cats.
-          </p>
-        </AnimatedText>
       </div>
     </section>
   );
 };
 
-// ============ ABOUT (with founder photo placeholder) ============
+// ============ ABOUT ============
 const About = () => (
   <section
     id="about"
@@ -2389,9 +2463,6 @@ const About = () => (
             effortless on your end.
           </p>
         </AnimatedText>
-        <AnimatedText delay={0.3}>
-          <div style={{ display: "none" }} />
-        </AnimatedText>
         <AnimatedText delay={0.4}>
           <div
             style={{
@@ -2405,7 +2476,7 @@ const About = () => (
             {[
               { label: "Pet-safe products", icon: "🐾" },
               { label: "Cancel anytime", icon: "✓" },
-              { label: "$5/clean to ACCT Philly", icon: "💚" },
+              { label: "Local Philly business", icon: "📍" },
             ].map((b, i) => (
               <div
                 key={i}
@@ -2429,13 +2500,13 @@ const About = () => (
   </section>
 );
 
-// ============ FAQ (reordered) ============
+// ============ FAQ ============
 const FAQ = () => {
   const [oi, setOi] = useState(null);
   const faqs = [
     {
       q: "What areas do you serve?",
-      a: "Philadelphia and surrounding suburbs — Main Line, Montgomery, Delaware, lower Bucks, and eastern Chester counties. Use the zip checker above to confirm.",
+      a: "Philadelphia and surrounding suburbs — Main Line, Montgomery, Delaware, lower Bucks, and eastern Chester counties. Use the zip checker on this page to confirm.",
     },
     {
       q: "Do I need to be home during the cleaning?",
@@ -2443,7 +2514,7 @@ const FAQ = () => {
     },
     {
       q: "How do I know my home and cat are safe?",
-      a: "We treat your home like our own. All products are pet-safe with no harsh chemicals, and we work carefully and quietly to avoid stressing your cat. References available on request.",
+      a: "We treat your home like our own. All products are pet-safe with no harsh chemicals, and we work carefully and quietly to avoid stressing your cat. We also use hospital-grade disinfection on our equipment between every appointment so nothing transfers between homes.",
     },
     {
       q: "Do I need to do anything to prepare?",
@@ -2464,6 +2535,10 @@ const FAQ = () => {
     {
       q: "I have multiple Litter-Robots. Do you offer a discount?",
       a: "Yes — each additional unit at the same address is $25 off. We're already there, so it's a no-brainer.",
+    },
+    {
+      q: "Is there a service agreement to sign?",
+      a: "Yes — every service includes a brief written agreement that documents the service performed, the condition of your unit before cleaning, and our standard terms. You'll see the terms when booking, and we'll sign a final copy on arrival before any work begins. We also take photos before we start so there's no question about pre-existing condition.",
     },
     {
       q: "Can I cancel or pause my recurring service?",
@@ -2604,6 +2679,7 @@ const BookingModal = ({ open, onClose }) => {
     address: "",
     model: "",
     plan: "",
+    agreedToTerms: false,
   });
 
   useEffect(() => {
@@ -2629,6 +2705,7 @@ const BookingModal = ({ open, onClose }) => {
       address: "",
       model: "",
       plan: "",
+      agreedToTerms: false,
     });
   };
 
@@ -2770,7 +2847,6 @@ const BookingModal = ({ open, onClose }) => {
               Your booking request is in. Here's exactly what happens next:
             </p>
 
-            {/* Numbered next steps */}
             <div
               style={{
                 textAlign: "left",
@@ -2787,7 +2863,7 @@ const BookingModal = ({ open, onClose }) => {
                 {
                   n: "1",
                   title: "We text or call you within 24 hours",
-                  body: `From ${PLACEHOLDERS.phoneNumber} — to confirm and pick a time that works.`,
+                  body: `From ${PLACEHOLDERS.phoneNumber} — to lock in a time that works.`,
                 },
                 {
                   n: "2",
@@ -2946,11 +3022,10 @@ const BookingModal = ({ open, onClose }) => {
               }}
             >
               {step === 1
-                ? "Just three quick fields — we'll handle the rest."
-                : "A few more details so we can prepare for your visit."}
+                ? "Just four quick fields to get started."
+                : "Address, model, and plan — and you're done."}
             </p>
 
-            {/* Progress bar */}
             <div
               style={{
                 height: "3px",
@@ -3010,6 +3085,19 @@ const BookingModal = ({ open, onClose }) => {
                   }
                 />
                 <input
+                  name="phone"
+                  type="tel"
+                  required
+                  placeholder="Phone number"
+                  value={data.phone}
+                  onChange={(e) => setData({ ...data, phone: e.target.value })}
+                  style={inputStyle}
+                  onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = `${COLORS.charcoal}15`)
+                  }
+                />
+                <input
                   name="zip"
                   type="text"
                   required
@@ -3060,22 +3148,19 @@ const BookingModal = ({ open, onClose }) => {
                 }}
               >
                 <input
-                  name="phone"
-                  type="tel"
-                  placeholder="Phone number (optional)"
-                  value={data.phone}
-                  onChange={(e) => setData({ ...data, phone: e.target.value })}
-                  style={inputStyle}
-                />
-                <input
                   name="address"
                   type="text"
-                  placeholder="Full address (optional)"
+                  required
+                  placeholder="Street address (so we can route the visit)"
                   value={data.address}
                   onChange={(e) =>
                     setData({ ...data, address: e.target.value })
                   }
                   style={inputStyle}
+                  onFocus={(e) => (e.target.style.borderColor = COLORS.sage)}
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = `${COLORS.charcoal}15`)
+                  }
                 />
                 <select
                   name="model"
@@ -3118,6 +3203,53 @@ const BookingModal = ({ open, onClose }) => {
                     Not sure yet — help me decide
                   </option>
                 </select>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "10px",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "13px",
+                    color: COLORS.warmGray,
+                    lineHeight: 1.5,
+                    cursor: "pointer",
+                    padding: "8px 4px",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    name="agreedToTerms"
+                    required
+                    checked={data.agreedToTerms}
+                    onChange={(e) =>
+                      setData({ ...data, agreedToTerms: e.target.checked })
+                    }
+                    style={{
+                      marginTop: "3px",
+                      width: "16px",
+                      height: "16px",
+                      accentColor: COLORS.sage,
+                      flexShrink: 0,
+                      cursor: "pointer",
+                    }}
+                  />
+                  <span>
+                    I've read and agree to LitterLuxe's{" "}
+                    <a
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: COLORS.sage,
+                        fontWeight: 600,
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Service Agreement
+                    </a>
+                    . A final copy is signed before service begins.
+                  </span>
+                </label>
                 {error && (
                   <div
                     style={{
@@ -3509,6 +3641,12 @@ const Footer = () => (
           </svg>
           @{PLACEHOLDERS.instagram}
         </a>
+        <a
+          href="/terms"
+          style={{ color: `${COLORS.cream}60`, textDecoration: "none" }}
+        >
+          Terms
+        </a>
         <span>© 2026 LitterLuxe · Philadelphia, PA</span>
       </div>
     </div>
@@ -3525,13 +3663,13 @@ export default function LitterLuxe() {
     <div style={{ background: COLORS.cream, minHeight: "100vh" }}>
       <Nav onBookClick={openBooking} />
       <Hero onBookClick={openBooking} />
+      <ZipCheck onBookClick={openBooking} />
       <WhyMatters />
       <Results />
       <Services />
       <WhoFor />
       <About />
       <Pricing onBookClick={openBooking} />
-      <ZipCheck onBookClick={openBooking} />
       <FAQ />
       <FinalCTA onBookClick={openBooking} />
       <Footer />
